@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const Joi = require("joi");
 const { handleMongooseError } = require('../helpers');
 
-const statusList = ['на складі', 'в роботі'];
+// const statusList = ['на складі', 'в роботі'];
 
 const goodsSchema = new Schema({
     name: String,
@@ -30,11 +30,11 @@ const goodsSchema = new Schema({
         ref: "user",
         required: true,
     },
-    status: {
-        type: String,
-        enum: statusList,
-        required: true,
-    }
+    // status: {
+    //     type: String,
+    //     enum: statusList,
+    //     required: true,
+    // }
 }, { versionKey: false, timestamps: true });
 
 goodsSchema.post('save', handleMongooseError);
@@ -49,9 +49,12 @@ const addSchema = Joi.object({
     price: Joi.number().required(),
     brand: Joi.string().required(),
     images: Joi.string().required(),
-    new: Joi.boolean(),
-    sale: Joi.boolean(),
-    status: Joi.string().valid(...statusList).required(),
+    new: Joi.boolean().default(false),
+    sale: Joi.boolean().required(),
+    // status: Joi.string().valid(...statusList).required(),
+    category: Joi.string().required(),
+    subCategory: Joi.string().required(),
+    subSubCategory: Joi.string().required(),
 });
 
 const updateChekedSchema = Joi.object({
