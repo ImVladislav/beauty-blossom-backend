@@ -5,7 +5,7 @@ const fs = require('fs/promises');
 const cors = require('cors');
 require('dotenv').config()
 const authRouter = require('./routes/api/auth')
-const woodRouter = require('./routes/api/wood');
+const goodsRouter = require('./routes/api/goods');
 const desksRouter = require('./routes/api/desks');
 const inProgressWood = require('./routes/api/inProgressWood');
 const inProgressDesk = require('./routes/api/inProgressDesk');
@@ -41,7 +41,7 @@ app.use(express.static("public"))
 // якщо прийде запит за файли бери його з папки паблік
 
 app.use('/api/auth', authRouter)
-app.use('/api/wood', woodRouter)
+app.use('/api/goods', goodsRouter)
 app.use('/api/desks/', desksRouter)
 app.use('/api/production', productionRouter)
 app.use('/api/inProgressWood', inProgressWood)

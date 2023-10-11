@@ -91,3 +91,8 @@ GET /wood-accounting 29-08-2023_04:55:03
 PUT /api/inProgressDesk 15-09-2023_02:16:45
 PUT /api/inProgressDesk 15-09-2023_02:16:53
 PUT /api/inProgressDesk 15-09-2023_02:17:22
+GET /api/goods 11-10-2023_04:41:15
+GET /api/goods 11-10-2023_04:41:55
+GET /api/goods 11-10-2023_04:42:24
+POST /api/auth/auth 11-10-2023_04:43:19
+GET /api/beauty_goods 11-10-2023_04:48:25

@@ -1,10 +1,10 @@
 const express = require("express");
 
-const ctrl = require("../../controllers/wood");
+const ctrl = require("../../controllers/goods");
 
 const {validateBody, isValidId, authenticate} = require("../../middlewares");
 
-const {schemas} = require("../../models/wood");
+const {schemas} = require("../../models/goods");
 
 const router = express.Router();
 
