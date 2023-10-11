@@ -3,7 +3,6 @@ const Joi = require("joi");
 const { handleMongooseError } = require('../helpers');
 
 // const statusList = ['на складі', 'в роботі'];
-
 const goodsSchema = new Schema({
     name: String,
     article: String,
