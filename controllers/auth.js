@@ -41,8 +41,19 @@ const register = async(req, res)=> {
 
     res.status(201).json({
         email: newUser.email,
-        name: newUser.name,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        country: newUser.country,
+        city: newUser.city,
     })
+
+
+
+    //     res.status(201).json({
+    //     email: newUser.email,
+    //     name: newUser.name,
+        
+    // })
 // }
 
 // const verifyEmail = async(req, res)=> {
@@ -113,18 +124,18 @@ const login = async(req, res)=> {
 
     res.json({
 
-    name: user.name,
+    firstName: user.firstName,
     email: email,
     token: token,
     })
 }
 
 const getCurrent = async(req, res)=> {
-    const {email, name} = req.user;
+    const {email, firstName} = req.user;
 
     res.json({
         email,
-        name,
+        firstName,
         
     })
 }

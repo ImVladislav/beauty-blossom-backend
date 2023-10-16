@@ -8,7 +8,7 @@ const authRouter = require('./routes/api/auth')
 const goodsRouter = require('./routes/api/goods');
 const desksRouter = require('./routes/api/desks');
 const inProgressWood = require('./routes/api/inProgressWood');
-const inProgressDesk = require('./routes/api/inProgressDesk');
+const basket = require('./routes/api/basket');
 const productionRouter = require('./routes/api/production');
 
 
@@ -45,7 +45,7 @@ app.use('/api/goods', goodsRouter)
 app.use('/api/desks/', desksRouter)
 app.use('/api/production', productionRouter)
 app.use('/api/inProgressWood', inProgressWood)
-app.use('/api/inProgressDesk', inProgressDesk)
+app.use('/api/basket', basket)
 // в юзі першим вказуєш шлях тоді для мідл вара цей запис буде стосуватися 
 // маршруту тому в файлі вуд цей шлях є дефолтним
 app.use(async(req, res, next) => {

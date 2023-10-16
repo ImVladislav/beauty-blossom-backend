@@ -6,7 +6,11 @@ const {handleMongooseError} = require("../helpers");
 const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const userSchema = new Schema({
-    name: {
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
         type: String,
         required: true,
     },
@@ -21,6 +25,35 @@ const userSchema = new Schema({
         minlength: 6,
         required: true,
     },
+    city: {
+        type: String,
+        required: true,
+    },
+    country: {
+        type: String,
+        required: true,
+    },
+    link: {
+        type: String,
+        required: false,
+    },
+    shopTypes: {
+        offlineShop: {
+            type: Boolean,
+            required: false,
+        },
+        onlineShop: {
+            type: Boolean,
+            required: false,
+        },
+        socialMedia: {
+            type: Boolean,
+            required: false,
+        }
+    },
+
+
+
     token: {
         type: String,
         default: ""
@@ -42,7 +75,11 @@ const userSchema = new Schema({
 userSchema.post("save", handleMongooseError);
 
 const registerSchema = Joi.object({
-    name: Joi.string().required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+    city: Joi.string().required(),
+    country: Joi.string().required(),
+                
     email: Joi.string().pattern(emailRegexp).required(),
     password: Joi.string().min(6).required(),
 })

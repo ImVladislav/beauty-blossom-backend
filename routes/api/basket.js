@@ -1,10 +1,10 @@
 const express = require("express");
 
-const ctrl = require("../../controllers/inProgressDesk");
+const ctrl = require("../../controllers/basket");
 
 const {validateBody, isValidId, authenticate} = require("../../middlewares");
 
-const {schemas} = require("../../models/inProgressDesk");
+const {schemas} = require("../../models/basket");
 
 const router = express.Router();
 
