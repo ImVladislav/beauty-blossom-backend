@@ -75,9 +75,11 @@ userSchema.post("save", handleMongooseError);
 const registerSchema = Joi.object({
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
-    city: Joi.string().required(),
-    country: Joi.string().required(),
-                
+    city: Joi.string(),
+    country: Joi.string(),
+    socialMedia: Joi.boolean(),
+    onlineShop: Joi.boolean(),
+    offlineShop: Joi.boolean(),            
     email: Joi.string().pattern(emailRegexp).required(),
     password: Joi.string().min(6).required(),
 })
