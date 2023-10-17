@@ -37,19 +37,17 @@ const userSchema = new Schema({
         type: String,
         required: false,
     },
-    shopTypes: {
-        offlineShop: {
-            type: Boolean,
-            required: false,
-        },
-        onlineShop: {
-            type: Boolean,
-            required: false,
-        },
-        socialMedia: {
-            type: Boolean,
-            required: false,
-        }
+    offlineShop: {
+        type: Boolean,
+        required: false,
+    },
+    onlineShop: {
+        type: Boolean,
+        required: false,
+    },
+    socialMedia: {
+        type: Boolean,
+        required: false,
     },
 
 
