@@ -29,13 +29,14 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    country: {
-        type: String,
+    number: {
+        type: Number,
+        unique: true,
         required: true,
     },
     link: {
         type: String,
-        required: false,
+    
     },
     offlineShop: {
         type: Boolean,
@@ -76,7 +77,7 @@ const registerSchema = Joi.object({
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
     city: Joi.string(),
-    country: Joi.string(),
+    number: Joi.number(),
     link: Joi.string(),
     socialMedia: Joi.boolean(),
     onlineShop: Joi.boolean(),
