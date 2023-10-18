@@ -71,7 +71,9 @@ const userSchema = new Schema({
     }
 }, {versionKey: false, timestamps: true});
 
-userSchema.post("save", handleMongooseError);
+
+userSchema.pos
+t("save", handleMongooseError);
 
 const registerSchema = Joi.object({
     firstName: Joi.string().required(),
