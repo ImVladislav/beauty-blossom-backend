@@ -34,7 +34,6 @@ const getById = async (req, res) => {
 
 const add = async (req, res) => {
     const { _id: owner } = req.user;
-
     const result = await basket.create({ ...req.body, owner });
     //  const result = await Wood.create({...req.body});
 

@@ -42,7 +42,7 @@ const addSchema = Joi.object({
     name: Joi.string().required(),
     article: Joi.string().required(),
     code: Joi.number().required(),
-    amount: Joi.number().required(),
+    amount: Joi.number(),
     description: Joi.string().required(),
     priceOPT: Joi.number().required(),
     price: Joi.number().required(),
@@ -51,10 +51,11 @@ const addSchema = Joi.object({
     new: Joi.boolean().default(false),
     sale: Joi.boolean().required(),
     // status: Joi.string().valid(...statusList).required(),
-    category: Joi.string().required(),
-    subCategory: Joi.string().required(),
-    subSubCategory: Joi.string().required(),
+    category: Joi.string(),
+    subCategory: Joi.string(),
+    subSubCategory: Joi.string(),
 });
+
 
 const updateChekedSchema = Joi.object({
     checked: Joi.boolean().required(),
@@ -65,9 +66,9 @@ const schemas = {
     updateChekedSchema,
 };
 
-const Basket = model("basket", basketShema);
+const basket = model("basket", basketShema);
 
 module.exports = {
-    Basket,
+    basket,
     schemas,
 };
