@@ -166,3 +166,6 @@ POST /api/bakset 20-10-2023_10:10:28
 POST /api/bakset 20-10-2023_10:10:29
 POST /api/bakset 20-10-2023_10:10:38
 GET /api/bakset 20-10-2023_10:10:42
+GET /api/getCurrent 23-10-2023_11:44:35
+GET /api/auth/getCurrent 23-10-2023_11:44:51
+POST /api/auth/getCurrent 23-10-2023_11:45:02
