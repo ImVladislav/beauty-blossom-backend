@@ -55,6 +55,10 @@ const userSchema = new Schema({
         required: true,
     },
 
+    isAdmin: {
+        type: Boolean,
+        required: false,
+    },
 
     token: {
         type: String,
@@ -83,6 +87,7 @@ const registerSchema = Joi.object({
     city: Joi.string(),
     number: Joi.number(),
     link: Joi.string(),
+    isAdmin: Joi.boolean(),
     socialMedia: Joi.boolean(),
     onlineShop: Joi.boolean(),
     offlineShop: Joi.boolean(),

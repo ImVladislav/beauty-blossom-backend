@@ -1,6 +1,6 @@
 // const wood = require("../WoodStorage/wood")
 
-const { Desks } = require('../models/desks')
+const { Orders } = require('../models/orders')
 
 
 const { HttpError, ctrlWrapper } = require("../helpers");
@@ -10,7 +10,7 @@ const getAll = async (req, res) => {
     // const {page = 1, limit = 10} = req.query;
     // req.query обєкт параметрів пошуку
     // const skip = (page - 1) * limit;
-    const result = await Desks.find();
+    const result = await Orders.find();
 
     // const result = await Wood.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
        
@@ -24,7 +24,7 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
     const { id } = req.params;
     // const result = await Book.findOne({_id: id})
-    const result = await Desks.findById(id);
+    const result = await Orders.findById(id);
     if (!result) {
         throw HttpError(404, "Not found");
     }
@@ -33,14 +33,14 @@ const getById = async (req, res) => {
 
 const add = async (req, res) => {
     const {_id: owner} = req.user;
-    const result = await Desks.create({ ...req.body, owner });
+    const result = await Orders.create({ ...req.body, owner });
     //  const result = await Wood.create({...req.body});
     res.status(201).json(result);
 }
 
 const updateById = async (req, res) => {
     const { id } = req.params;
-    const result = await Desks.findByIdAndUpdate(id, req.body, {new: true});
+    const result = await Orders.findByIdAndUpdate(id, req.body, {new: true});
     if (!result) {
         throw HttpError(404, "Not found");
     }
@@ -49,7 +49,7 @@ const updateById = async (req, res) => {
 
 const updateCheked = async (req, res) => {
     const { id } = req.params;
-    const result = await Desks.findByIdAndUpdate(id, req.body, {new: true});
+    const result = await Orders.findByIdAndUpdate(id, req.body, {new: true});
     if (!result) {
         throw HttpError(404, "Not found");
     }
@@ -58,7 +58,7 @@ const updateCheked = async (req, res) => {
 
 const deleteById = async (req, res) => {
     const { id } = req.params;
-    const result = await Desks.findByIdAndRemove(id);
+    const result = await Orders.findByIdAndRemove(id);
     if (!result) {
         throw HttpError(404, "Not found");
     }

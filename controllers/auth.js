@@ -29,7 +29,17 @@ const register = async(req, res)=> {
     const avatarURL = gravatar.url(email);
     const verificationCode = nanoid();
 
-    const newUser = await User.create({...req.body, password: hashPassword, avatarURL, verificationCode});
+    // Передайте адмінські права, якщо відповідний користувач
+    const isAdmin = req.body.isAdmin;
+
+
+    const newUser = await User.create({
+        ...req.body,
+        password: hashPassword,
+        avatarURL,
+        verificationCode,
+        isAdmin: isAdmin,
+    });
     
     // const verifyEmail = {
     //     to: email,
@@ -45,6 +55,7 @@ const register = async(req, res)=> {
         lastName: newUser.lastName,
         country: newUser.country,
         city: newUser.city,
+        isAdmin: newUser.isAdmin,
     })
 
 
@@ -102,14 +113,16 @@ const login = async(req, res)=> {
     // if(!user.verify) {
     //     throw HttpError(401, "Email not verified");
     // }
-
+    
     const passwordCompare = await bcrypt.compare(password, user.password);
     // в bcrypt є метод компеір передаємо ( не захешований пароль, захешований )
     // якщо 2 арг є захешованою версією першого повертає тру 
     if(!passwordCompare) {
         throw HttpError(401, "Email or password invalid");
     }
-
+     if (user.isAdmin) {
+        user.isAdmin = true;
+    }
     const payload = {
         id: user._id,
     }
@@ -124,13 +137,12 @@ const login = async(req, res)=> {
 
     res.json({
 
-        firstName: user.firstName,
-        lastName: user.lastName,
-        
-        number: user.number,
-
+    firstName: user.firstName,
+    lastName: user.lastName,
+    number: user.number,
     email: email,
     token: token,
+    isAdmin: user.isAdmin,
     })
 }
 

@@ -6,7 +6,7 @@ const cors = require('cors');
 require('dotenv').config()
 const authRouter = require('./routes/api/auth')
 const goodsRouter = require('./routes/api/goods');
-const desksRouter = require('./routes/api/desks');
+const desksRouter = require('./routes/api/orders');
 const inProgressWood = require('./routes/api/inProgressWood');
 const basket = require('./routes/api/basket');
 const productionRouter = require('./routes/api/production');
