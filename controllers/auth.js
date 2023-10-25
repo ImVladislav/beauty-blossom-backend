@@ -147,13 +147,14 @@ const login = async(req, res)=> {
 }
 
 const getCurrent = async(req, res)=> {
-    const {email, firstName, lastName, number} = req.user;
+    const {email, firstName, lastName, number, isAdmin} = req.user;
 
     res.json({
         email,
         firstName,
         lastName,
-        number
+        number,
+        isAdmin
     })
 }
 
