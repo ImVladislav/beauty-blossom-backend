@@ -50,7 +50,7 @@ const userSchema = new Schema({
         type: Boolean,
         required: false,
     },
-    OPTUser: {
+    optUser: {
         type: Boolean,
         required: true,
     },
@@ -91,7 +91,7 @@ const registerSchema = Joi.object({
     socialMedia: Joi.boolean(),
     onlineShop: Joi.boolean(),
     offlineShop: Joi.boolean(),
-    OPTUser: Joi.boolean().required(),
+    optUser: Joi.boolean().required(),
     email: Joi.string().pattern(emailRegexp).required(),
     password: Joi.string().min(6).required(),
 })

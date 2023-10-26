@@ -55,6 +55,7 @@ const register = async(req, res)=> {
         lastName: newUser.lastName,
         country: newUser.country,
         city: newUser.city,
+        optUser: newUser.optUser,
         isAdmin: newUser.isAdmin,
     })
 
@@ -143,18 +144,20 @@ const login = async(req, res)=> {
     email: email,
     token: token,
     isAdmin: user.isAdmin,
+    optUser: user.optUser,
     })
 }
 
 const getCurrent = async(req, res)=> {
-    const {email, firstName, lastName, number, isAdmin} = req.user;
+    const {email, firstName, lastName, number, isAdmin, optUser} = req.user;
 
     res.json({
         email,
         firstName,
         lastName,
         number,
-        isAdmin
+        isAdmin,
+        optUser
     })
 }
 
