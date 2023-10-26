@@ -80,11 +80,16 @@ const addSchema = Joi.object({
     paymentMethod: Joi.string().required(),
     comments: Joi.string().required(),
     amount: Joi.number().required(),
-    orderedItems: Joi.object({
-  productId: Joi.string().required(),
+        orderedItems: Joi.array().items(Joi.object({
+        productId: Joi.string().required(),
+        name: Joi.string().required(),
+        quantity: Joi.number().required(),
+        amount: Joi.number().required(),
+        code: Joi.string().required()
+    })).required()
 
 })
-})
+
 
 const updateChekedSchema = Joi.object({
     checked: Joi.boolean().required(),
