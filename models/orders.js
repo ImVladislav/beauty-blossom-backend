@@ -78,10 +78,10 @@ const addSchema = Joi.object({
     city: Joi.string().required(),
     warehouse: Joi.string().required(),
     paymentMethod: Joi.string().required(),
-    comments: Joi.string().required(),
+    comments: Joi.string(),
     amount: Joi.number().required(),
         orderedItems: Joi.array().items(Joi.object({
-        productId: Joi.string().required(),
+        productId: Joi.number().required(),
         name: Joi.string().required(),
         quantity: Joi.number().required(),
         amount: Joi.number().required(),
