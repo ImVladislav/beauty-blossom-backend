@@ -40,10 +40,7 @@ const ordersSchema = new Schema({
         type: Number,
         required: true
     },
-    orderedItems: {
-        
-      _id: false,
-      type: [
+    orderedItems: [
           {
           productId: {
             type: String,
@@ -66,9 +63,7 @@ const ordersSchema = new Schema({
               required: true     
           }
         },
-      ],
-      default: [],
-    },
+    ],
 }, { versionKey: false, timestamps: true })
 
 ordersSchema.post('save', handleMongooseError)
@@ -100,9 +95,9 @@ const schemas = {
     updateChekedSchema,
 }
 
-const Orders = model("orders", ordersSchema)
+const orders = model("orders", ordersSchema)
 
 module.exports = {
-    Orders,
+    orders,
     schemas,
 }

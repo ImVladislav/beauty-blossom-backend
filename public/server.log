@@ -171,3 +171,12 @@ GET /api/auth/getCurrent 23-10-2023_11:44:51
 POST /api/auth/getCurrent 23-10-2023_11:45:02
 GET /api/auth/getCurrent 25-10-2023_06:08:06
 GET /api/orders 25-10-2023_09:08:00
+GET /api/orders 26-10-2023_11:15:36
+GET /api/orders 26-10-2023_11:25:04
+GET /api/orders 26-10-2023_11:26:05
+GET /api/orders 26-10-2023_11:26:32
+GET /api/orders 26-10-2023_11:26:33
+POST /api/orders 26-10-2023_11:26:37
+POST /api/orders 26-10-2023_11:26:38
+POST /api/Orders 26-10-2023_11:31:01
+POST /api/Orders 26-10-2023_11:31:03
