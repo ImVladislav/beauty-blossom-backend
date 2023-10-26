@@ -82,7 +82,7 @@ const addSchema = Joi.object({
     amount: Joi.number().required(),
     orderedItems: Joi.object({
   productId: Joi.string().required(),
-  measure: Joi.string().max(200).required(),
+
 })
 })
 
