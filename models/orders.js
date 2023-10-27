@@ -4,6 +4,10 @@ const { handleMongooseError } = require('../helpers')
 
 
 const ordersSchema = new Schema({
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     email: {
         type: String,
         required: true
