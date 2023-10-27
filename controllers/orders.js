@@ -6,15 +6,15 @@ const { orders } = require('../models/orders')
 const { HttpError, ctrlWrapper } = require("../helpers");
 
 const getAll = async (req, res) => {
-    const {_id: owner} = req.user; // щоб отримува тіоьки той хто створив
+    // const {_id: owner} = req.user; // щоб отримува тіоьки той хто створив
     // const {page = 1, limit = 10} = req.query;
     // req.query обєкт параметрів пошуку
     // const skip = (page - 1) * limit;
-
+    const result = await orders.find();
     // const result = await inProgressDesk.find();
     // const result = await inProgressDesk.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
        
-    const result = await orders.find({owner}, "-createdAt -updatedAt").populate("owner", "name email");
+    // const result = await orders.find({owner}, "-createdAt -updatedAt").populate("owner", "name email");
     // -createdAt -updatedAt поля які не треба брати з бази
     // populate бере айді знаходить овенра і вставляє обєкт з його данними
     // 2 арг список полів які треба повернути
