@@ -2,11 +2,13 @@ const { Schema, model } = require('mongoose');
 const Joi = require("joi");
 const { handleMongooseError } = require('../helpers')
 
+const statusList = ['Новий', 'Прийняте в роботу','Збирається','Зібрано', 'Відправлено','Відміна']
 
 const ordersSchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: "user",
+        required: true,
     },
     email: {
         type: String,
@@ -43,6 +45,11 @@ const ordersSchema = new Schema({
     amount: {
         type: Number,
         required: true
+    },
+    status: {
+    type: String,
+        enum: statusList,
+        required: false
     },
     orderedItems: [
           {
