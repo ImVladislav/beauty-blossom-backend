@@ -89,7 +89,7 @@ const addSchema = Joi.object({
         name: Joi.string().required(),
         quantity: Joi.number().required(),
         amount: Joi.number().required(),
-        images: Joi.number().required(),
+        images: Joi.string().required(),
         code: Joi.string().required()
     })).required()
 
