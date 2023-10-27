@@ -46,9 +46,9 @@ const ordersSchema = new Schema({
             type: String,
             required: true
             },
-             images: {
+          images: {
             type: String,
-            required: true
+            
           }, 
           code: {
             type: String,

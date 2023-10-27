@@ -6,14 +6,15 @@ const { orders } = require('../models/orders')
 const { HttpError, ctrlWrapper } = require("../helpers");
 
 const getAll = async (req, res) => {
-    // const {_id: owner} = req.user; //щоб отримува тільки той хто створив
+    const {_id: owner} = req.user; // щоб отримува тіоьки той хто створив
     // const {page = 1, limit = 10} = req.query;
     // req.query обєкт параметрів пошуку
     // const skip = (page - 1) * limit;
-    const result = await orders.find();
 
-    // const result = await Wood.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
+    // const result = await inProgressDesk.find();
+    // const result = await inProgressDesk.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
        
+    const result = await orders.find({owner}, "-createdAt -updatedAt").populate("owner", "name email");
     // -createdAt -updatedAt поля які не треба брати з бази
     // populate бере айді знаходить овенра і вставляє обєкт з його данними
     // 2 арг список полів які треба повернути
@@ -32,20 +33,30 @@ const getById = async (req, res) => {
 }
 
 const add = async (req, res) => {
-    const {_id: owner} = req.user;
+    const { _id: owner } = req.user;
     const result = await orders.create({ ...req.body, owner });
     //  const result = await Wood.create({...req.body});
+
     res.status(201).json(result);
+
 }
 
 const updateById = async (req, res) => {
-    const { id } = req.params;
-    const result = await orders.findByIdAndUpdate(id, req.body, {new: true});
-    if (!result) {
-        throw HttpError(404, "Not found");
+  const { id } = req.params;
+  const { amount } = req.body;
+
+    const currentItem = await orders.findById(id);
+
+    if (!currentItem) {
+      throw HttpError(404, "Not found");
     }
-    res.json(result);
-}
+
+    currentItem.amount += parseInt(amount);
+    await currentItem.save();
+
+    res.json(currentItem);
+
+};
 
 const updateCheked = async (req, res) => {
     const { id } = req.params;
@@ -66,7 +77,6 @@ const deleteById = async (req, res) => {
         message: "Delete success"
     })
 }
-
 
 
 // const getAll = async (req, res) => {
