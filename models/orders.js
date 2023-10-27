@@ -45,7 +45,11 @@ const ordersSchema = new Schema({
           productId: {
             type: String,
             required: true
-          },
+            },
+             images: {
+            type: String,
+            required: true
+          }, 
           code: {
             type: String,
             required: true
@@ -85,6 +89,7 @@ const addSchema = Joi.object({
         name: Joi.string().required(),
         quantity: Joi.number().required(),
         amount: Joi.number().required(),
+        images: Joi.number().required(),
         code: Joi.string().required()
     })).required()
 
