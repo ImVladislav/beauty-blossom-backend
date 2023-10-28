@@ -42,21 +42,30 @@ const add = async (req, res) => {
 }
 
 const updateById = async (req, res) => {
-  const { id } = req.params;
-  const { amount } = req.body;
-
-    const currentItem = await orders.findById(id);
-
-    if (!currentItem) {
-      throw HttpError(404, "Not found");
+    const { id } = req.params;
+    const result = await orders.findByIdAndUpdate(id, req.body, {new: true});
+    if (!result) {
+        throw HttpError(404, "Not found");
     }
+    res.json(result);
+}
 
-    currentItem.amount += parseInt(amount);
-    await currentItem.save();
+// const updateById = async (req, res) => {
+//   const { id } = req.params;
+//   const { amount } = req.body;
 
-    res.json(currentItem);
+//     const currentItem = await orders.findById(id);
 
-};
+//     if (!currentItem) {
+//       throw HttpError(404, "Not found");
+//     }
+
+//     currentItem.amount += parseInt(amount);
+//     await currentItem.save();
+
+//     res.json(currentItem);
+
+// };
 
 const updateCheked = async (req, res) => {
     const { id } = req.params;
