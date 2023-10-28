@@ -49,7 +49,7 @@ const ordersSchema = new Schema({
     status: {
     type: String,
         enum: statusList,
-        required: false
+        required: true
     },
     orderedItems: [
           {
@@ -95,6 +95,8 @@ const addSchema = Joi.object({
     paymentMethod: Joi.string().required(),
     comments: Joi.string(),
     amount: Joi.number().required(),
+    status: Joi.string().valid(...statusList).required(),
+
         orderedItems: Joi.array().items(Joi.object({
         productId: Joi.number().required(),
         name: Joi.string().required(),
