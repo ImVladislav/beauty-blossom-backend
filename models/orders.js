@@ -96,8 +96,7 @@ const addSchema = Joi.object({
     comments: Joi.string(),
     amount: Joi.number().required(),
     status: Joi.string().valid(...statusList).required(),
-
-        orderedItems: Joi.array().items(Joi.object({
+    orderedItems: Joi.array().items(Joi.object({
         productId: Joi.number().required(),
         name: Joi.string().required(),
         quantity: Joi.number().required(),
