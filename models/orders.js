@@ -55,7 +55,19 @@ const ordersSchema = new Schema({
         enum: statusList,
         required: true
     },
-    
+        address: {
+        type: String,
+        required: false
+    },
+            building: {
+        type: String,
+        required: false
+    },
+                apartment: {
+        type: String,
+        required: false
+    },
+  
     orderedItems: [
           {
           productId: {
@@ -96,12 +108,15 @@ const addSchema = Joi.object({
     lastName: Joi.string().required(),
     number: Joi.number().required(),
     city: Joi.string().required(),
-    warehouse: Joi.string().required(),
+    warehouse: Joi.string(),
     paymentMethod: Joi.string().required(),
     comments: Joi.string(),
     amount: Joi.number().required(),
     deliveryMethod: Joi.string().required(),
     status: Joi.string().valid(...statusList).required(),
+    address: Joi.string(),
+    building: Joi.string(),
+    apartment: Joi.string(),
     orderedItems: Joi.array().items(Joi.object({
         productId: Joi.number().required(),
         name: Joi.string().required(),
