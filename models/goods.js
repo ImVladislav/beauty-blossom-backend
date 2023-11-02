@@ -27,7 +27,7 @@ const goodsSchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
         ref: "user",
-        required: true,
+        required: false,
     },
     // status: {
     //     type: String,
