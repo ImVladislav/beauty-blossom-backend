@@ -14,7 +14,7 @@ router.get("/:id", authenticate, isValidId, ctrl.getById);
 
 router.post("/", validateBody(schemas.addSchema), ctrl.add);
 
-router.put("/:id", authenticate, isValidId, validateBody(schemas.addSchema), ctrl.updateById);
+router.put("/:id", isValidId, validateBody(schemas.addSchema), ctrl.updateById);
 
 router.patch("/:id/checked", authenticate, isValidId, validateBody(schemas.updateChekedSchema), ctrl.updateCheked);
 
