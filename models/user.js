@@ -36,7 +36,6 @@ const userSchema = new Schema({
     },
     link: {
         type: String,
-    
     },
     offlineShop: {
         type: Boolean,
