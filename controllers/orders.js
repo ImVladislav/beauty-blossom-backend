@@ -32,13 +32,22 @@ const getById = async (req, res) => {
     res.json(result);
 }
 
+// const add = async (req, res) => {
+    
+//     const { _id: owner } = req.user;
+//     const result = await orders.create({ ...req.body, owner });
+//     //  const result = await Wood.create({...req.body});
+
+//     res.status(201).json(result);
+
+// }
+
 const add = async (req, res) => {
-    const { _id: owner } = req.user;
+    const owner = req.user ? req.user._id : null; // Якщо req.user визначений, то беремо його _id, інакше owner = null
     const result = await orders.create({ ...req.body, owner });
     //  const result = await Wood.create({...req.body});
 
     res.status(201).json(result);
-
 }
 
 const updateById = async (req, res) => {
