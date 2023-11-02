@@ -12,7 +12,7 @@ router.get("/", authenticate, ctrl.getAll);
 
 router.get("/:id", authenticate, isValidId, ctrl.getById);
 
-router.post("/", authenticate, validateBody(schemas.addSchema), ctrl.add);
+router.post("/", validateBody(schemas.addSchema), ctrl.add);
 
 router.put("/:id", authenticate, isValidId, validateBody(schemas.addSchema), ctrl.updateById);
 
