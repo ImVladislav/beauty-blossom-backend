@@ -32,7 +32,7 @@ const ordersSchema = new Schema({
     },
     warehouse: {
         type: String,
-        required: true
+        required: false
     },
     paymentMethod: {
         type: String,
