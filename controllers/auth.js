@@ -149,7 +149,7 @@ const login = async(req, res)=> {
 }
 
 const getCurrent = async(req, res)=> {
-    const {email, firstName, lastName, number, isAdmin, optUser} = req.user;
+    const { _id, email, firstName, lastName, number, isAdmin, optUser} = req.user;
 
     res.json({
         email,
@@ -157,7 +157,8 @@ const getCurrent = async(req, res)=> {
         lastName,
         number,
         isAdmin,
-        optUser
+        optUser,
+        _id
     })
 }
 
@@ -184,6 +185,34 @@ const updateAvatar = async(req, res)=> {
     })
 }
 
+const updateUserData = async (req, res) => {
+  const { _id } = req.user;
+  const { email, firstName, lastName, number } = req.body;
+
+  try {
+    // Перевірка, чи користувач існує
+    const user = await User.findById(_id);
+    if (!user) {
+      throw HttpError(404, "User not found");
+    }
+
+    // Оновлення даних профілю користувача
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (number) user.number = number;
+    if (email) user.email = email;
+    await user.save();
+
+    res.json({
+      message: "Profile updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    throw HttpError(500, "Internal Server Error");
+  }
+};
+
+
 module.exports = {
     register: ctrlWrapper(register),
     // verifyEmail: ctrlWrapper(verifyEmail),
@@ -192,4 +221,5 @@ module.exports = {
     getCurrent: ctrlWrapper(getCurrent),
     logout: ctrlWrapper(logout),
     updateAvatar: ctrlWrapper(updateAvatar),
+    updateUserData: ctrlWrapper(updateUserData)
 }
