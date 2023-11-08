@@ -8,6 +8,8 @@ const {schemas} = require("../../models/orders");
 
 const router = express.Router();
 
+router.get("/byUser", authenticate, ctrl.getAllbyUser);
+
 router.get("/", authenticate, ctrl.getAll);
 
 router.get("/:id", authenticate, isValidId, ctrl.getById);
