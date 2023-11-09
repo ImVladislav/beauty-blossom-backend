@@ -124,9 +124,11 @@ const login = async(req, res)=> {
      if (user.isAdmin) {
         user.isAdmin = true;
     }
+
     const payload = {
         id: user._id,
     }
+
 
     const token = jwt.sign(payload, SECRET_KEY, {expiresIn: "23d"});
     // токен це пропуск складається з пейлоад(може бкти id користувачва)

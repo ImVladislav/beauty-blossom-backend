@@ -22,6 +22,16 @@ const getAll = async (req, res) => {
     res.json(result);
 }
 
+const add = async (req, res) => {
+    console.log("йобаний юзер", req.user);
+    
+    const owner = req.user ? req.user._id : null; // Якщо req.user визначений, то беремо його _id, інакше owner = null
+    const result = await orders.create({ ...req.body, owner });
+    //  const result = await Wood.create({...req.body});
+
+    res.status(201).json(result);
+}
+
 const getAllbyUser = async (req, res) => {
     const {_id: owner} = req.user; // щоб отримува тіоьки той хто створив
     // const {page = 1, limit = 10} = req.query;
@@ -30,7 +40,7 @@ const getAllbyUser = async (req, res) => {
     // const result = await orders.find();
     // const result = await inProgressDesk.find();
     // const result = await inProgressDesk.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
-       
+       console.log("йобаний юзер", req.user );
     const result = await orders({owner}, "-updatedAt").populate("owner", "name email");
     // -createdAt -updatedAt поля які не треба брати з бази
     // populate бере айді знаходить овенра і вставляє обєкт з його данними
@@ -51,27 +61,20 @@ const getById = async (req, res) => {
     res.json(result);
 }
 
-const add = async (req, res) => {
-    
-    const { _id: owner } = req.user;
-    const result = await orders.create({ ...req.body, owner });
-    //  const result = await Wood.create({...req.body});
-
-    res.status(201).json(result);
-
-}
-
-
-
-
 // const add = async (req, res) => {
     
-//     const owner = req.user ? req.user._id : null; // Якщо req.user визначений, то беремо його _id, інакше owner = null
+//     const { _id: owner } = req.user;
+// console.log("йобаний юзер", req.user);
+    
 //     const result = await orders.create({ ...req.body, owner });
 //     //  const result = await Wood.create({...req.body});
 
 //     res.status(201).json(result);
+
 // }
+
+
+
 
 const updateById = async (req, res) => {
     const { id } = req.params;

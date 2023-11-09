@@ -12,9 +12,9 @@ router.get("/byUser", authenticate, ctrl.getAllbyUser);
 
 router.get("/", authenticate, ctrl.getAll);
 
-router.get("/:id", authenticate, isValidId, ctrl.getById);
+router.post("/", authenticate, validateBody(schemas.addSchema), ctrl.add);
 
-router.post("/", validateBody(schemas.addSchema), ctrl.add);
+router.get("/:id", authenticate, isValidId, ctrl.getById);
 
 router.put("/:id", authenticate, isValidId, validateBody(schemas.addSchema), ctrl.updateById);
 
@@ -23,3 +23,7 @@ router.patch("/:id/checked", authenticate, isValidId, validateBody(schemas.updat
 router.delete("/:id", authenticate, isValidId, ctrl.deleteById);
 
 module.exports = router;
+ 
+ 
+ 
+ 

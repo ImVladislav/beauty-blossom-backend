@@ -246,3 +246,8 @@ GET /beauty-blossom/news? 08-11-2023_09:31:54
 GET /favicon.ico 08-11-2023_09:31:54
 POST /api/orders/byUser 09-11-2023_12:43:34
 POST /api/orders/byUser 09-11-2023_12:43:35
+POST /api/orders/byUser 09-11-2023_01:06:14
+POST /api/orders/byUser 09-11-2023_01:06:16
+POST /api/orders/byUser 09-11-2023_01:07:13
+POST /api/orders/byUser 09-11-2023_03:11:52
+POST /api/orders/byUser 09-11-2023_03:11:55
