@@ -8,7 +8,7 @@ const ordersSchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
         ref: "user",
-        required: false,
+        required: true,
     },
     email: {
         type: String,
