@@ -10,6 +10,10 @@ const ordersSchema = new Schema({
         ref: "user",
         required: false,
     },
+    isOptUser: {
+        type: Boolean,
+        required: false
+    },
     email: {
         type: String,
         required: true
