@@ -214,6 +214,37 @@ const updateUserData = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  const { _id } = req.user;
+  const { oldPassword, newPassword } = req.body;
+
+  try {
+    // Перевірка, чи користувач існує
+    const user = await User.findById(_id);
+    if (!user) {
+      throw HttpError(404, "User not found");
+    }
+
+    // Перевірка старого паролю
+    const passwordCompare = await bcrypt.compare(oldPassword, user.password);
+    if (!passwordCompare) {
+      throw HttpError(401, "Old password is incorrect");
+    }
+
+    // Оновлення паролю
+    const hashNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashNewPassword;
+    await user.save();
+
+    res.json({
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    throw HttpError(500, "Internal Server Error");
+  }
+};
+
 
 module.exports = {
     register: ctrlWrapper(register),
@@ -223,5 +254,6 @@ module.exports = {
     getCurrent: ctrlWrapper(getCurrent),
     logout: ctrlWrapper(logout),
     updateAvatar: ctrlWrapper(updateAvatar),
-    updateUserData: ctrlWrapper(updateUserData)
+    updateUserData: ctrlWrapper(updateUserData),
+    changePassword: ctrlWrapper(changePassword)
 }
