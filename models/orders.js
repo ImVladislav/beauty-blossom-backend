@@ -125,6 +125,7 @@ const addSchema = Joi.object({
     address: Joi.string(),
     building: Joi.string(),
     apartment: Joi.string(),
+    isOptUser: Joi.boolean(),
     orderNumber: Joi.string(),
     orderedItems: Joi.array().items(Joi.object({
         productId: Joi.number().required(),
