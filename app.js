@@ -9,7 +9,7 @@ const goodsRouter = require('./routes/api/goods');
 const ordersRouter = require('./routes/api/orders');
 const inProgressWood = require('./routes/api/inProgressWood');
 const basket = require('./routes/api/basket');
-const feedbackRouter = require('./routes/api/Feedback');
+const feedbackRouter = require('./routes/api/feedback');
 
 
 
