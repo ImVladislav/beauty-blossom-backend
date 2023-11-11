@@ -12,6 +12,7 @@ const basketShema = new Schema({
     name: String,
     article: String,
     code: Number,
+    productId: Number,
     amount: Number,
     description: String,
     priceOPT: Number,
@@ -43,6 +44,7 @@ basketShema.post('save', handleMongooseError);
 const addSchema = Joi.object({
     name: Joi.string().required(),
     article: Joi.string().required(),
+    productId: Joi.number().required(),
     code: Joi.number().required(),
     amount: Joi.number(),
     description: Joi.string().required(),
