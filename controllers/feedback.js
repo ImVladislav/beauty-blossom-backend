@@ -1,6 +1,6 @@
 // const wood = require("../WoodStorage/wood")
 
-const { Production } = require('../models/production')
+const { feedback } = require('../models/feedback')
 
 
 const { HttpError, ctrlWrapper } = require("../helpers");
@@ -10,7 +10,7 @@ const getAll = async (req, res) => {
     // const {page = 1, limit = 10} = req.query;
     // req.query обєкт параметрів пошуку
     // const skip = (page - 1) * limit;
-    const result = await Production.find();
+    const result = await feedback.find();
 
     // const result = await Wood.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
        
@@ -21,44 +21,44 @@ const getAll = async (req, res) => {
     res.json(result);
 }
 
-const getById = async (req, res) => {
-    const { id } = req.params;
-    // const result = await Book.findOne({_id: id})
-    const result = await Production.findById(id);
-    if (!result) {
-        throw HttpError(404, "Not found");
-    }
-    res.json(result);
-}
+// const getById = async (req, res) => {
+//     const { id } = req.params;
+//     // const result = await Book.findOne({_id: id})
+//     const result = await Production.findById(id);
+//     if (!result) {
+//         throw HttpError(404, "Not found");
+//     }
+//     res.json(result);
+// }
 
 const add = async (req, res) => {
     const {_id: owner} = req.user;
-    const result = await Production.create({ ...req.body, owner });
+    const result = await feedback.create({ ...req.body, owner });
     //  const result = await Wood.create({...req.body});
     res.status(201).json(result);
 }
 
-const updateById = async (req, res) => {
-    const { id } = req.params;
-    const result = await Production.findByIdAndUpdate(id, req.body, {new: true});
-    if (!result) {
-        throw HttpError(404, "Not found");
-    }
-    res.json(result);
-}
+// const updateById = async (req, res) => {
+//     const { id } = req.params;
+//     const result = await Production.findByIdAndUpdate(id, req.body, {new: true});
+//     if (!result) {
+//         throw HttpError(404, "Not found");
+//     }
+//     res.json(result);
+// }
 
-const updateCheked = async (req, res) => {
-    const { id } = req.params;
-    const result = await Production.findByIdAndUpdate(id, req.body, {new: true});
-    if (!result) {
-        throw HttpError(404, "Not found");
-    }
-    res.json(result);
-}
+// const updateCheked = async (req, res) => {
+//     const { id } = req.params;
+//     const result = await Production.findByIdAndUpdate(id, req.body, {new: true});
+//     if (!result) {
+//         throw HttpError(404, "Not found");
+//     }
+//     res.json(result);
+// }
 
 const deleteById = async (req, res) => {
     const { id } = req.params;
-    const result = await Production.findByIdAndRemove(id);
+    const result = await feedback.findByIdAndRemove(id);
     if (!result) {
         throw HttpError(404, "Not found");
     }
@@ -102,9 +102,9 @@ const deleteById = async (req, res) => {
 
 module.exports = {
     getAll: ctrlWrapper(getAll),
-    getById: ctrlWrapper(getById),
+    // getById: ctrlWrapper(getById),
     add: ctrlWrapper(add),
-    updateById: ctrlWrapper(updateById),
-    updateCheked: ctrlWrapper(updateCheked),
+    // updateById: ctrlWrapper(updateById),
+    // updateCheked: ctrlWrapper(updateCheked),
     deleteById: ctrlWrapper(deleteById),
 }

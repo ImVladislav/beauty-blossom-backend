@@ -9,8 +9,7 @@ const goodsRouter = require('./routes/api/goods');
 const ordersRouter = require('./routes/api/orders');
 const inProgressWood = require('./routes/api/inProgressWood');
 const basket = require('./routes/api/basket');
-const productionRouter = require('./routes/api/production');
-
+const feedbackRouter = require('./routes/api/Feedback');
 
 
 
@@ -44,7 +43,7 @@ app.use(express.static("public"))
 app.use('/api/auth', authRouter)
 app.use('/api/goods', goodsRouter)
 app.use('/api/orders/', ordersRouter)
-app.use('/api/production', productionRouter)
+app.use('/api/feedback', feedbackRouter)
 app.use('/api/inProgressWood', inProgressWood)
 app.use('/api/basket', basket)
 // в юзі першим вказуєш шлях тоді для мідл вара цей запис буде стосуватися 
