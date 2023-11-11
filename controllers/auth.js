@@ -4,12 +4,14 @@ const gravatar = require("gravatar"); // для генерації тимчас�
 const path = require("path");
 const fs = require("fs/promises");
 const {nanoid} = require("nanoid");
+const ctrlWrapper = require("../helpers/ctrlWrapper");
+const HttpError = require("../helpers/HttpError");
 
 const {User} = require("../models/user");
 
 // const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
 
-const { HttpError, ctrlWrapper } = require("../helpers");
+// const { HttpError, ctrlWrapper } = require("../helpers");
 
 const {SECRET_KEY, BASE_URL} = process.env;
 
@@ -214,6 +216,8 @@ const updateUserData = async (req, res) => {
   }
 };
 
+
+
 const changePassword = async (req, res) => {
   const { _id } = req.user;
   const { oldPassword, newPassword } = req.body;
@@ -241,7 +245,7 @@ const changePassword = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    throw HttpError(500, "Internal Server Error");
+    throw error; // just rethrow the error, let the error handler deal with it
   }
 };
 
@@ -257,3 +261,4 @@ module.exports = {
     updateUserData: ctrlWrapper(updateUserData),
     changePassword: ctrlWrapper(changePassword)
 }
+
