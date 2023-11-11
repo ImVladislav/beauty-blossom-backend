@@ -4,6 +4,11 @@ const { handleMongooseError } = require('../helpers');
 
 // const statusList = ['на складі', 'в роботі'];
 const basketShema = new Schema({
+        owner: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        required: false,
+    },
     name: String,
     article: String,
     code: Number,
@@ -25,11 +30,7 @@ const basketShema = new Schema({
     category: String,
     subCategory: String,
     subSubCategory: String,
-    owner: {
-        type: Schema.Types.ObjectId,
-        ref: "user",
-        required: true,
-    },
+
     // status: {
     //     type: String,
     //     enum: statusList,
