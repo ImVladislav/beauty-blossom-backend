@@ -43,7 +43,7 @@ const add = async (req, res) => {
 
 const updateById = async (req, res) => {
   const { id } = req.params;
-  const { amount } = req.body;
+  const { quantity } = req.body;
 
     const currentItem = await basket.findById(id);
 
@@ -51,7 +51,7 @@ const updateById = async (req, res) => {
       throw HttpError(404, "Not found");
     }
 
-    currentItem.amount += parseInt(amount);
+    currentItem.quantity += parseInt(quantity);
     await currentItem.save();
 
     res.json(currentItem);
