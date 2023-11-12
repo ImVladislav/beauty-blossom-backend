@@ -50,9 +50,6 @@ const updateById = async (req, res) => {
     if (!currentItem) {
       throw HttpError(404, "Not found");
     }
-    console.log(currentItem);
-    console.log(currentItem.quantity);
-    console.log(parseInt(quantity));
     currentItem.quantity = parseInt(quantity);
     await currentItem.save();
 
