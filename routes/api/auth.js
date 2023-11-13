@@ -22,7 +22,7 @@ router.get("/current", authenticate, ctrl.getCurrent);
 
 router.post("/updateUserData/:id", authenticate, ctrl.updateUserData);
 
-router.post("/changePassword/:id", authenticate, ctrl.changePassword);
+router.post("/changePassword", authenticate, ctrl.changePassword);
 
 router.post("/logout", authenticate, ctrl.logout);
 

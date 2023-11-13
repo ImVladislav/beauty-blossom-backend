@@ -154,7 +154,6 @@ const login = async(req, res)=> {
 
 const getCurrent = async(req, res)=> {
     const { _id, email, firstName, lastName, number, isAdmin, optUser} = req.user;
-
     res.json({
         email,
         firstName,
