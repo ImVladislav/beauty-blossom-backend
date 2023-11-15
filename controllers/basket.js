@@ -77,8 +77,20 @@ const deleteById = async (req, res) => {
     })
 }
 
+const deleteAllByOwner = async (req, res) => {
+    const { _id: owner } = req.user;
+
+    const result = await basket.deleteMany({ owner });
+
+    res.json({
+        message: "All items deleted successfully",
+        deletedCount: result.deletedCount,
+    });
+}
+
 
 module.exports = {
+    deleteAllByOwner: ctrlWrapper(deleteAllByOwner),
     getAll: ctrlWrapper(getAll),
     getById: ctrlWrapper(getById),
     add: ctrlWrapper(add),

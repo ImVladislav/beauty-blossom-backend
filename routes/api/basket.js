@@ -20,4 +20,6 @@ router.patch("/:id/checked", authenticate, isValidId, validateBody(schemas.updat
 
 router.delete("/:id", authenticate, isValidId, ctrl.deleteById);
 
+router.delete("/", authenticate, ctrl.deleteAllByOwner);
+
 module.exports = router;

@@ -79,12 +79,6 @@ module.exports = app
 
 
 
-// avkpallet
-
-// avkPalletSendGird2
-
-
-
 
 
 
