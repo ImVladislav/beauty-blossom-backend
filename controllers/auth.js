@@ -3,145 +3,142 @@ const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar"); // для генерації тимчасових аватарів
 const path = require("path");
 const fs = require("fs/promises");
-const {nanoid} = require("nanoid");
+const { nanoid } = require("nanoid");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
 const HttpError = require("../helpers/HttpError");
 
-const {User} = require("../models/user");
+const { User } = require("../models/user");
 
 // const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
 
 // const { HttpError, ctrlWrapper } = require("../helpers");
 
-const {SECRET_KEY, BASE_URL} = process.env;
+const { SECRET_KEY, BASE_URL } = process.env;
 
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
-const register = async(req, res)=> {
-    const {email, password} = req.body;
-    const user = await User.findOne({email});
+const register = async (req, res) => {
+  const { email, password, number } = req.body;
+  const user = await User.findOne({ email });
+  const numberUser = await User.findOne({ number });
+  if (user) {
+    throw HttpError(409, "Email already in use");
+  }
+  if (numberUser) {
+    throw HttpError(409, "The phone number is already in use");
+  }
+  const hashPassword = await bcrypt.hash(password, 10);
+  // для однакових строк хеш різний, (пароль, сіль)
+  // сіль це набір випадкових символів
+  const avatarURL = gravatar.url(email);
+  const verificationCode = nanoid();
 
-    if(user){
-        throw HttpError(409, "Email already in use");
-    }
+  // Передайте адмінські права, якщо відповідний користувач
+  const isAdmin = req.body.isAdmin;
 
-    const hashPassword = await bcrypt.hash(password, 10);
-    // для однакових строк хеш різний, (пароль, сіль)
-    // сіль це набір випадкових символів
-    const avatarURL = gravatar.url(email);
-    const verificationCode = nanoid();
+  const newUser = await User.create({
+    ...req.body,
+    password: hashPassword,
+    avatarURL,
+    verificationCode,
+    isAdmin: isAdmin,
+  });
 
-    // Передайте адмінські права, якщо відповідний користувач
-    const isAdmin = req.body.isAdmin;
+  // const verifyEmail = {
+  //     to: email,
+  //     subject: "Verify email",
+  //     html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationCode}">Click verify email</a>`
+  // };
 
+  // await sendEmail(verifyEmail);
 
-    const newUser = await User.create({
-        ...req.body,
-        password: hashPassword,
-        avatarURL,
-        verificationCode,
-        isAdmin: isAdmin,
-    });
-    
-    // const verifyEmail = {
-    //     to: email,
-    //     subject: "Verify email",
-    //     html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationCode}">Click verify email</a>`
-    // };
+  res.status(201).json({
+    email: newUser.email,
+    firstName: newUser.firstName,
+    lastName: newUser.lastName,
+    country: newUser.country,
+    city: newUser.city,
+    optUser: newUser.optUser,
+    isAdmin: newUser.isAdmin,
+  });
 
-    // await sendEmail(verifyEmail);
+  //     res.status(201).json({
+  //     email: newUser.email,
+  //     name: newUser.name,
 
-    res.status(201).json({
-        email: newUser.email,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        country: newUser.country,
-        city: newUser.city,
-        optUser: newUser.optUser,
-        isAdmin: newUser.isAdmin,
-    })
+  // })
+  // }
 
+  // const verifyEmail = async(req, res)=> {
+  //     const {verificationCode} = req.params;
+  //     const user = await User.findOne({verificationCode});
+  //     if(!user){
+  //         throw HttpError(401, "Email not found")
+  //     }
+  //     await User.findByIdAndUpdate(user._id, {verify: true, verificationCode: ""});
 
+  //     res.json({
+  //         message: "Email verify success"
+  //     })
+  // }
 
-    //     res.status(201).json({
-    //     email: newUser.email,
-    //     name: newUser.name,
-        
-    // })
-// }
+  // const resendVerifyEmail = async(req, res)=> {
+  //     const {email} = req.body;
+  //     const user = await User.findOne({email});
+  //     if(!user) {
+  //         throw HttpError(401, "Email not found");
+  //     }
+  //     if(user.verify) {
+  //         throw HttpError(401, "Email already verify");
+  //     }
 
-// const verifyEmail = async(req, res)=> {
-//     const {verificationCode} = req.params;
-//     const user = await User.findOne({verificationCode});
-//     if(!user){
-//         throw HttpError(401, "Email not found")
-//     }
-//     await User.findByIdAndUpdate(user._id, {verify: true, verificationCode: ""});
+  //     const verifyEmail = {
+  //         to: email,
+  //         subject: "Verify email",
+  //         html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${user.verificationCode}">Click verify email</a>`
+  //     };
 
-//     res.json({
-//         message: "Email verify success"
-//     })
-// }
+  //     await sendEmail(verifyEmail);
 
-// const resendVerifyEmail = async(req, res)=> {
-//     const {email} = req.body;
-//     const user = await User.findOne({email});
-//     if(!user) {
-//         throw HttpError(401, "Email not found");
-//     }
-//     if(user.verify) {
-//         throw HttpError(401, "Email already verify");
-//     }
+  //     res.json({
+  //         message: "Verify email send success"
+  //     })
+};
 
-//     const verifyEmail = {
-//         to: email,
-//         subject: "Verify email",
-//         html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${user.verificationCode}">Click verify email</a>`
-//     };
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw HttpError(401, "Email or password invalid");
+  }
 
-//     await sendEmail(verifyEmail);
+  // if(!user.verify) {
+  //     throw HttpError(401, "Email not verified");
+  // }
 
-//     res.json({
-//         message: "Verify email send success"
-//     })
- }
+  const passwordCompare = await bcrypt.compare(password, user.password);
+  // в bcrypt є метод компеір передаємо ( не захешований пароль, захешований )
+  // якщо 2 арг є захешованою версією першого повертає тру
+  if (!passwordCompare) {
+    throw HttpError(401, "Email or password invalid");
+  }
+  if (user.isAdmin) {
+    user.isAdmin = true;
+  }
 
-const login = async(req, res)=> {
-    const {email, password} = req.body;
-    const user = await User.findOne({email});
-    if(!user){
-        throw HttpError(401, "Email or password invalid");
-    }
+  const payload = {
+    id: user._id,
+  };
 
-    // if(!user.verify) {
-    //     throw HttpError(401, "Email not verified");
-    // }
-    
-    const passwordCompare = await bcrypt.compare(password, user.password);
-    // в bcrypt є метод компеір передаємо ( не захешований пароль, захешований )
-    // якщо 2 арг є захешованою версією першого повертає тру 
-    if(!passwordCompare) {
-        throw HttpError(401, "Email or password invalid");
-    }
-     if (user.isAdmin) {
-        user.isAdmin = true;
-    }
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23d" });
+  // токен це пропуск складається з пейлоад(може бкти id користувачва)
+  // секретний ключ та час життя
+  // токен можна розкодувати
+  // const decodeToken = jwt.decode(tocken)
+  // console.log(decodeToken);
+  await User.findByIdAndUpdate(user._id, { token });
 
-    const payload = {
-        id: user._id,
-    }
-
-
-    const token = jwt.sign(payload, SECRET_KEY, {expiresIn: "23d"});
-    // токен це пропуск складається з пейлоад(може бкти id користувачва)
-// секретний ключ та час життя
-// токен можна розкодувати
-// const decodeToken = jwt.decode(tocken)
-// console.log(decodeToken);
-    await User.findByIdAndUpdate(user._id, {token});
-
-    res.json({
-
+  res.json({
     firstName: user.firstName,
     lastName: user.lastName,
     number: user.number,
@@ -149,44 +146,45 @@ const login = async(req, res)=> {
     token: token,
     isAdmin: user.isAdmin,
     optUser: user.optUser,
-    })
-}
+  });
+};
 
-const getCurrent = async(req, res)=> {
-    const { _id, email, firstName, lastName, number, isAdmin, optUser} = req.user;
-    res.json({
-        email,
-        firstName,
-        lastName,
-        number,
-        isAdmin,
-        optUser,
-        _id
-    })
-}
+const getCurrent = async (req, res) => {
+  const { _id, email, firstName, lastName, number, isAdmin, optUser } =
+    req.user;
+  res.json({
+    email,
+    firstName,
+    lastName,
+    number,
+    isAdmin,
+    optUser,
+    _id,
+  });
+};
 
-const logout = async(req, res) => {
-    const {_id} = req.user;
-    await User.findByIdAndUpdate(_id, {token: ""});
+const logout = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: "" });
 
-    res.json({
-        message: "Logout success"
-    })
-}
+  res.json({
+    message: "Logout success",
+  });
+};
 
-const updateAvatar = async(req, res)=> {
-    const {_id} = req.user;
-    const {path: tempUpload, originalname} = req.file;
-    const filename = `${_id}_${originalname}`;
-    const resultUpload = path.join(avatarsDir, filename);
-    await fs.rename(tempUpload, resultUpload);
-    const avatarURL = path.join("avatars", filename);
-    await User.findByIdAndUpdate(_id, {avatarURL});
+const updateAvatar = async (req, res) => {
+  const { _id } = req.user;
+  const { path: tempUpload, originalname } = req.file;
+  const filename = `${_id}_${originalname}`;
+  const resultUpload = path.join(avatarsDir, filename);
+  await fs.rename(tempUpload, resultUpload);
+  const avatarURL = path.join("avatars", filename);
+  await User.findByIdAndUpdate(_id, { avatarURL });
 
-    res.json({
-        avatarURL,
-    })
-}
+  res.json({
+    avatarURL,
+  });
+};
 
 const updateUserData = async (req, res) => {
   const { _id } = req.user;
@@ -214,8 +212,6 @@ const updateUserData = async (req, res) => {
     throw HttpError(500, "Internal Server Error");
   }
 };
-
-
 
 const changePassword = async (req, res) => {
   const { _id } = req.user;
@@ -248,16 +244,14 @@ const changePassword = async (req, res) => {
   }
 };
 
-
 module.exports = {
-    register: ctrlWrapper(register),
-    // verifyEmail: ctrlWrapper(verifyEmail),
-    // resendVerifyEmail: ctrlWrapper(resendVerifyEmail),
-    login: ctrlWrapper(login),
-    getCurrent: ctrlWrapper(getCurrent),
-    logout: ctrlWrapper(logout),
-    updateAvatar: ctrlWrapper(updateAvatar),
-    updateUserData: ctrlWrapper(updateUserData),
-    changePassword: ctrlWrapper(changePassword)
-}
-
+  register: ctrlWrapper(register),
+  // verifyEmail: ctrlWrapper(verifyEmail),
+  // resendVerifyEmail: ctrlWrapper(resendVerifyEmail),
+  login: ctrlWrapper(login),
+  getCurrent: ctrlWrapper(getCurrent),
+  logout: ctrlWrapper(logout),
+  updateAvatar: ctrlWrapper(updateAvatar),
+  updateUserData: ctrlWrapper(updateUserData),
+  changePassword: ctrlWrapper(changePassword),
+};
