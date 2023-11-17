@@ -31,7 +31,6 @@ const userSchema = new Schema({
     },
     number: {
         type: Number,
-        unique: true,
         required: true,
     },
     link: {

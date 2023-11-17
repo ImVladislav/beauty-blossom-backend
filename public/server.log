@@ -273,3 +273,15 @@ POST /api/auth/changePassword 13-11-2023_02:00:40
 POST /api/auth/changePassword 13-11-2023_02:00:42
 GET /beauty-blossom/news? 14-11-2023_09:08:26
 GET / 14-11-2023_09:08:34
+GET /manifest.json 15-11-2023_03:06:29
+GET /static/js/bundle.js.map 15-11-2023_03:06:29
+GET /main.7ac9c9cfdcbeaf21954d.hot-update.json 15-11-2023_03:12:32
+GET /product/1638289 15-11-2023_03:12:32
+GET /favicon.ico 15-11-2023_03:12:32
+GET /product/1638289 15-11-2023_03:17:06
+GET / 15-11-2023_03:17:13
+GET / 15-11-2023_05:30:16
+GET / 15-11-2023_05:30:19
+GET / 15-11-2023_05:30:20
+GET / 15-11-2023_05:30:20
+GET / 15-11-2023_05:30:20
