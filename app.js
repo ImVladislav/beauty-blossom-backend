@@ -11,8 +11,6 @@ const inProgressWood = require('./routes/api/inProgressWood');
 const basket = require('./routes/api/basket');
 const feedbackRouter = require('./routes/api/feedback');
 
-
-
 const app = express() // веб сервер
 // шукає запит шлях поки не знайде 1 підходяще
 
