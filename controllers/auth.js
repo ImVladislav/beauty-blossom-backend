@@ -9,7 +9,7 @@ const HttpError = require("../helpers/HttpError");
 
 const { User } = require("../models/user");
 
-const mailer = require('./nodemailer')
+const mailer = require("./nodemailer");
 // const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
 
 // const { HttpError, ctrlWrapper } = require("../helpers");
@@ -44,20 +44,19 @@ const register = async (req, res) => {
     verificationCode,
     isAdmin: isAdmin,
   });
-console.log(req.body.email);
+
   const message = {
     to: req.body.email,
-    subject: 'Congratulations! You are successfully registred on our site',
+    subject: "Congratulations! You are successfully registred on our site",
     text: `Вітаємо, Ви успішно зареєструвались на нашому сайті!
         
         данні вашого аккаунту:
         login: ${req.body.email}
         password: ${req.body.password}
         
-        Не потрібно відповідати на данне повідомлення.`
-    
-  }
-   mailer(message) 
+        Не потрібно відповідати на данне повідомлення.`,
+  };
+  mailer(message);
   // const verifyEmail = {
   //     to: email,
   //     subject: "Verify email",
@@ -257,11 +256,6 @@ const changePassword = async (req, res) => {
     throw error; // just rethrow the error, let the error handler deal with it
   }
 };
-
-
-
-
-
 
 module.exports = {
   register: ctrlWrapper(register),
