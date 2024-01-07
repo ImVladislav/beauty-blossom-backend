@@ -263,23 +263,23 @@ const changePassword = async (req, res) => {
 
 const restorePassword = async (req, res) => {
   const { email } = req.body;
-  const { newPassword } = req.body;
-  const { _id } = req.body;
+  // const { newPassword } = req.body;
+  // const { _id } = req.user;
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
       throw new HttpError(404, "User not found");
     }
-
-    const hashNewPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashNewPassword;
+    console.log(user._id);
+    // const hashNewPassword = await bcrypt.hash(newPassword, 10);
+    // user.password = hashNewPassword;
     await user.save();
 
     const message = {
       to: email,
       subject: "Beauty-blossom - відновлення пароля",
-      text: `Вами був створений запит на відновлення паролю на Beauty blossom. Для оновлення пароля перейдіть за посиланням нижче: </br> https://www.beautyblossom.com.ua/forgotten/${_id}`,
+      text: `Вами був створений запит на відновлення паролю на Beauty blossom. Для оновлення пароля перейдіть за посиланням нижче: \n https://www.beautyblossom.com.ua/forgotten/${user._id}`,
     };
     mailer(message);
 
