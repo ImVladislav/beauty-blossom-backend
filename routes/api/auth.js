@@ -2,9 +2,9 @@ const express = require("express");
 
 const ctrl = require("../../controllers/auth");
 
-const {validateBody, authenticate, upload} = require("../../middlewares");
+const { validateBody, authenticate, upload } = require("../../middlewares");
 
-const {schemas} = require("../../models/user");
+const { schemas } = require("../../models/user");
 
 const router = express.Router();
 
@@ -24,8 +24,15 @@ router.post("/updateUserData/:id", authenticate, ctrl.updateUserData);
 
 router.post("/changePassword", authenticate, ctrl.changePassword);
 
+router.get("/restorePassword", authenticate, ctrl.restorePassword);
+
 router.post("/logout", authenticate, ctrl.logout);
 
-router.patch("/avatars", authenticate, upload.single("avatar"), ctrl.updateAvatar);
+router.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  ctrl.updateAvatar
+);
 
 module.exports = router;

@@ -47,14 +47,18 @@ const register = async (req, res) => {
 
   const message = {
     to: req.body.email,
-    subject: "Congratulations! You are successfully registred on our site",
+    subject: "Beauty-blossom",
     text: `Вітаємо, Ви успішно зареєструвались на нашому сайті!
         
         данні вашого аккаунту:
         login: ${req.body.email}
         password: ${req.body.password}
         
-        Не потрібно відповідати на данне повідомлення.`,
+        Не потрібно відповідати на данне повідомлення.
+        
+        Контакти для зворотнього зв'язку
+        +380500529100
+        beautyblossom.opt@gmail.com`,
   };
   mailer(message);
   // const verifyEmail = {
@@ -257,6 +261,37 @@ const changePassword = async (req, res) => {
   }
 };
 
+const restorePassword = async (req, res) => {
+  const { email } = req.body;
+  const { newPassword } = req.body;
+  const { _id } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new HttpError(404, "User not found");
+    }
+
+    const hashNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashNewPassword;
+    await user.save();
+
+    const message = {
+      to: email,
+      subject: "Beauty-blossom - відновлення пароля",
+      text: `Вами був створений запит на відновлення паролю на Beauty blossom. Для оновлення пароля перейдіть за посиланням нижче: </br> https://www.beautyblossom.com.ua/forgotten/${_id}`,
+    };
+    mailer(message);
+
+    res.json({
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   // verifyEmail: ctrlWrapper(verifyEmail),
@@ -267,4 +302,5 @@ module.exports = {
   updateAvatar: ctrlWrapper(updateAvatar),
   updateUserData: ctrlWrapper(updateUserData),
   changePassword: ctrlWrapper(changePassword),
+  restorePassword: ctrlWrapper(restorePassword),
 };
