@@ -263,8 +263,6 @@ const changePassword = async (req, res) => {
 
 const restorePassword = async (req, res) => {
   const { email } = req.body;
-  // const { newPassword } = req.body;
-  // const { _id } = req.user;
 
   try {
     const user = await User.findOne({ email });
@@ -272,8 +270,7 @@ const restorePassword = async (req, res) => {
       throw new HttpError(404, "User not found");
     }
     console.log(user._id);
-    // const hashNewPassword = await bcrypt.hash(newPassword, 10);
-    // user.password = hashNewPassword;
+
     await user.save();
 
     const message = {
@@ -282,6 +279,28 @@ const restorePassword = async (req, res) => {
       text: `Вами був створений запит на відновлення паролю на Beauty blossom. Для оновлення пароля перейдіть за посиланням нижче: \n https://www.beautyblossom.com.ua/forgotten/${user._id}`,
     };
     mailer(message);
+
+    res.json({
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+const restorePasswordStep2 = async (req, res) => {
+  const { _id, newPassword } = req.body;
+
+  try {
+    const user = await User.findById(_id);
+    if (!user) {
+      throw new HttpError(404, "User not found");
+    }
+
+    const hashNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashNewPassword;
+    await user.save();
 
     res.json({
       message: "Password changed successfully",
@@ -303,4 +322,5 @@ module.exports = {
   updateUserData: ctrlWrapper(updateUserData),
   changePassword: ctrlWrapper(changePassword),
   restorePassword: ctrlWrapper(restorePassword),
+  restorePasswordStep2: ctrlWrapper(restorePasswordStep2),
 };

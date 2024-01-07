@@ -26,6 +26,8 @@ router.post("/changePassword", authenticate, ctrl.changePassword);
 
 router.post("/restorePassword", authenticate, ctrl.restorePassword);
 
+router.post("/restorePasswordStep2", authenticate, ctrl.restorePasswordStep2);
+
 router.post("/logout", authenticate, ctrl.logout);
 
 router.patch(
