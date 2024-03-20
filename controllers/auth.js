@@ -290,17 +290,17 @@ const restorePassword = async (req, res) => {
 };
 
 const restorePasswordStep2 = async (req, res) => {
-  const { _id, newPassword } = req.body;
-
+  const { _id } = req.body;
+  //  const { _id, newPassword } = req.body;
   try {
     const user = await User.findById(_id);
     if (!user) {
       throw new HttpError(404, "User not found");
     }
-
-    const hashNewPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashNewPassword;
-    await user.save();
+console.log(user);
+    // const hashNewPassword = await bcrypt.hash(newPassword, 10);
+    // user.password = hashNewPassword;
+    // await user.save();
 
     res.json({
       message: "Password changed successfully",
