@@ -10,6 +10,7 @@ const ordersRouter = require('./routes/api/orders');
 const inProgressWood = require('./routes/api/inProgressWood');
 const basket = require('./routes/api/basket');
 const feedbackRouter = require('./routes/api/feedback');
+const emailRouter = require('./routes/api/email');
 
 const app = express() // веб сервер
 // шукає запит шлях поки не знайде 1 підходяще
@@ -44,6 +45,8 @@ app.use('/api/orders/', ordersRouter)
 app.use('/api/feedback', feedbackRouter)
 app.use('/api/inProgressWood', inProgressWood)
 app.use('/api/basket', basket)
+app.use('/api/email', emailRouter)
+
 // в юзі першим вказуєш шлях тоді для мідл вара цей запис буде стосуватися 
 // маршруту тому в файлі вуд цей шлях є дефолтним
 app.use(async(req, res, next) => {
