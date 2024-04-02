@@ -55,6 +55,10 @@
 
 const nodemailer = require("nodemailer");
 const { ctrlWrapper } = require("../helpers");
+
+const fs = require("fs");
+const path = require("path");
+
 async function sendEmail(paths, req, res) {
   const { text } = req.body;
 
@@ -70,7 +74,7 @@ async function sendEmail(paths, req, res) {
     });
 
     const imagesHtml = paths
-      .map((image) => `<img src='cid:${image.cid}' style="width: 45%;">`)
+      .map((image) => `<img src='cid:${image.cid}'">`)
       .join("");
 
     const mailOptions = {
@@ -78,16 +82,16 @@ async function sendEmail(paths, req, res) {
       to: "nafanya102@gmail.com",
       subject: "This message contains multiple attachments",
       html: `
-    ${text}
-    <div style="text-align: center; background-color: #fff; color:#000000;">
-      <h3 style="font-weight: bold; color:#000000;">Вітаємо!</h3>
-
-      <p style="margin-top: 20px; color:#000000;">
+      <body style="text-align: center; background-color: #fff; color:#000000; fontSize: 18px">
+      <h3 style="font-weight: bold; color:#000000; font-size: 22px">Вітаємо!</h3>
+      ${text}
+      
+      <p style="margin-top: 20px; color:#000000; font-size: 18px">
         Ми помітили, що ви нещодавно наповнювали корзину товарами, але вона так і залишилась незавершеною.
         Нам дуже кортить дізнатись, що саме стало на заваді оформити замовлення до кінця?
       </p>
 
-      <p style="margin-top: 20px; color:#000000;">
+      <p style="margin-top: 20px; color:#000000; font-size: 18px">
         Ми хочемо продовжувати співпрацю з вами в майбутньому, а тому ДАРУЄМО ВАМ ЗНИЖКУ на наступні:
         <br>
         При замовленні від 10 тис грн - знижка 3%
@@ -95,18 +99,17 @@ async function sendEmail(paths, req, res) {
         При замовленні від 20 тис грн - знижка 5%
       </p>
 
-      <p style="margin-top: 20px; color:#000000;">
+      <p style="margin-top: 20px; color:#000000; font-size: 18px">
         Знижка діє необмежену кількість замовлень, проте лише до 01.04.2024 року
       </p>
 
-      <p style="margin-top: 20px; color:#000000;">
+      <p style="margin-top: 20px; color:#000000; font-size: 18px">
         А також, поспішаємо вас повідомити, що ми отримали поповнення брендів: Bilou, Carmex, Lador, Laneige.
         Зараз саме час оформити замовлення.
       </p>
 
       <div style="
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        display: 'flex';
         justifyContent: 'center',
         gap: 20px;
         margin-top: 20px;
@@ -131,14 +134,14 @@ async function sendEmail(paths, req, res) {
         color: #000;
       ">Перейти на сайт</a>
 
-      <p style="color:#000000;">Відправлено з сайту Beauty Blossom</p>
+      <p style="color:#000000; font-size: 18px">Відправлено з сайту Beauty Blossom</p>
 
 
         <ul style="
           list-style-type: none;
           padding: 0;
-          display: flex;
-          justify-content: center;
+          display: -webkit-inline-box;
+          justifyContent: center;
           align-items: center;
         ">
           <li style="margin-right: 10px;">
@@ -199,21 +202,42 @@ async function sendEmail(paths, req, res) {
         </ul>
 
 
-      <p style="color:#000000;">*При будь-яких питаннях звертайтесь до Світлани за номером: 0500529100 (Viber, Telegram)</p>
-      <p style="color:#000000;">З повагою, команда Beauty Blossom!</p>
-      <p style="color:#000000;">${new Date().toLocaleString()}</p>
-    </div>
+      <p style="color:#000000; font-size: 18px ">*При будь-яких питаннях звертайтесь до Світлани за номером: 0500529100 (Viber, Telegram)</p>
+      <p style="color:#000000; font-size: 18px ">З повагою, команда Beauty Blossom!</p>
+      <p style="color:#000000; font-size: 18px ">${new Date().toLocaleString()}</p>
+    </body>
       `,
       attachments: paths,
     };
 
     const result = await transporter.sendMail(mailOptions);
     console.log("Email is sent:", result);
-    return "Email is sent, please check the inbox";
+    deleteOldImages();
+    // Повертаємо об'єкт з повідомленням для фронтенду
+    return { message: "Email is sent, please check the inbox", success: true };
   } catch (error) {
     console.log("An error occurred:", error);
-    return "Error occurred while sending the email";
+    // Повертаємо об'єкт з повідомленням про помилку для фронтенду
+    return {
+      message: "Error occurred while sending the email",
+      success: false,
+    };
   }
+}
+
+function deleteOldImages() {
+  const directory = path.join(__dirname, "../public/uploads");
+
+  fs.readdir(directory, (err, files) => {
+    if (err) throw err;
+
+    for (const file of files) {
+      fs.unlink(path.join(directory, file), (err) => {
+        if (err) throw err;
+        console.log(`Deleted file: ${file}`);
+      });
+    }
+  });
 }
 
 module.exports = {

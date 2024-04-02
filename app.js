@@ -229,9 +229,9 @@ app.use(cors());
 
 // метод use якщо немає маршруту, а йде одразу функція він підходть
 // до будь якого маршруту експрес виконає цю функцію.
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "index.html"));
+// });
 // app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 // якщо прийде запит за файли бери його з папки паблік
@@ -305,7 +305,7 @@ module.exports = app;
 //     }
 // }
 
-// const actionIndex = process.argv.indexOf('--action');
+// const action = process.argv.indexOf('--action');
 // if (actionIndex !== -1) {
 //     const action = process.argv[actionIndex + 1];
 //     invokeActionWood({action})
