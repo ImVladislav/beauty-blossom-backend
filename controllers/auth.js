@@ -297,7 +297,7 @@ const restorePasswordStep2 = async (req, res) => {
     if (!user) {
       throw new HttpError(404, "User not found");
     }
-console.log(user);
+    console.log(user);
     // const hashNewPassword = await bcrypt.hash(newPassword, 10);
     // user.password = hashNewPassword;
     // await user.save();

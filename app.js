@@ -235,7 +235,7 @@ app.use(cors());
 // app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 // якщо прийде запит за файли бери його з папки паблік
-
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/auth", authRouter);
@@ -246,11 +246,7 @@ app.use("/api/inProgressWood", inProgressWood);
 app.use("/api/basket", basket);
 // app.use(bodyParser.json());
 app.use("/api/email", emailRouter);
-// app.use("/api/upload", uploadMiddleware);
 
-// app.use("/api/upload", uploadRouter);
-// в юзі першим вказуєш шлях тоді для мідл вара цей запис буде стосуватися
-// маршруту тому в файлі вуд цей шлях є дефолтним
 app.use(async (req, res, next) => {
   const { method, url } = req; // метод та url беремо з реквесту
   const date = moment().format("DD-MM-YYYY_hh:mm:ss");
