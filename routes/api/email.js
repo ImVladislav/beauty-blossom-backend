@@ -1,11 +1,24 @@
 const express = require("express");
-const ctrl = require("../../controllers/nodemailer");
-const { validateBody } = require("../../middlewares");
-const { schemas } = require("../../models/email");
-// const { schemas } = require("../../models/goods");
+const { sendEmail } = require("../../controllers/nodemailer"); // Імпорт функції sendEmail з контролера
+const { upload } = require("../../middlewares/upload"); // Імпорт middleware для завантаження файлів
+
 const router = express.Router();
 
-// Маршрут для відправки електронної пошти
-router.post("/", validateBody(schemas.addSchema), ctrl.email);
+router.post("/sendemail", upload, async (req, res) => {
+  try {
+    // Отримання шляхів до завантажених файлів та генерація cid
+    const paths = req.files.map((file, index) => ({
+      filename: file.filename,
+      path: file.path,
+      cid: `image-${Date.now()}-${index}@nodemailer.com`,
+    }));
+
+    // Виклик функції sendEmail з контролера та отримання результату
+    const result = await sendEmail(paths, req, res);
+    res.send(result); // Відправлення результату клієнту
+  } catch (error) {
+    res.status(500).send("Error occurred while sending the email"); // Обробка помилки
+  }
+});
 
 module.exports = router;
