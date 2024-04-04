@@ -206,8 +206,8 @@ async function sendEmail(paths, req, res) {
 }
 
 function deleteOldImages() {
-  const directory = path.join(__dirname, "../public/uploads");
-
+  // const directory = path.join(__dirname, "../public/uploads");
+  const directory = path.join(__dirname, "/var/public/uploads");
   fs.readdir(directory, (err, files) => {
     if (err) throw err;
 
