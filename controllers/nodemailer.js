@@ -60,7 +60,7 @@ const fs = require("fs");
 const path = require("path");
 
 async function sendEmail(paths, req, res) {
-  const { text } = req.body;
+  const { title, text, to, subject } = req.body;
 
   try {
     const transporter = nodemailer.createTransport({
@@ -79,35 +79,15 @@ async function sendEmail(paths, req, res) {
 
     const mailOptions = {
       from: "beautyblossom@ukr.net",
-      to: "nafanya102@gmail.com",
-      subject: "This message contains multiple attachments",
+      to,
+      subject,
       html: `
       <body style="text-align: center; background-color: #fff; color:#000000; fontSize: 18px">
-      <h3 style="font-weight: bold; color:#000000; font-size: 22px">Вітаємо!</h3>
+      <h3 style="font-weight: bold; color:#000000; font-size: 22px">${title}</h3>
+      <pre style="margin-top: 20px; color:#000000; font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 400;">
       ${text}
+      </pre>
       
-      <p style="margin-top: 20px; color:#000000; font-size: 18px">
-        Ми помітили, що ви нещодавно наповнювали корзину товарами, але вона так і залишилась незавершеною.
-        Нам дуже кортить дізнатись, що саме стало на заваді оформити замовлення до кінця?
-      </p>
-
-      <p style="margin-top: 20px; color:#000000; font-size: 18px">
-        Ми хочемо продовжувати співпрацю з вами в майбутньому, а тому ДАРУЄМО ВАМ ЗНИЖКУ на наступні:
-        <br>
-        При замовленні від 10 тис грн - знижка 3%
-        <br>
-        При замовленні від 20 тис грн - знижка 5%
-      </p>
-
-      <p style="margin-top: 20px; color:#000000; font-size: 18px">
-        Знижка діє необмежену кількість замовлень, проте лише до 01.04.2024 року
-      </p>
-
-      <p style="margin-top: 20px; color:#000000; font-size: 18px">
-        А також, поспішаємо вас повідомити, що ми отримали поповнення брендів: Bilou, Carmex, Lador, Laneige.
-        Зараз саме час оформити замовлення.
-      </p>
-
       <div style="
         display: 'flex';
         justifyContent: 'center',
@@ -243,3 +223,121 @@ function deleteOldImages() {
 module.exports = {
   sendEmail: ctrlWrapper(sendEmail),
 };
+
+//   <body style="text-align: center; background-color: #fff; color:#000000; fontSize: 18px">
+//   <h3 style="font-weight: bold; color:#000000; font-size: 22px">${title}</h3>
+//   <pre style="margin-top: 20px; color:#000000; font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 400;">
+//   ${text}
+//   </pre>
+//   <pre style="margin-top: 20px; color:#000000; font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 400;">
+//     Ми помітили, що ви нещодавно наповнювали корзину товарами, але вона так і залишилась незавершеною.
+//     Нам дуже кортить дізнатись, що саме стало на заваді оформити замовлення до кінця?
+
+//     Ми хочемо продовжувати співпрацю з вами в майбутньому, а тому ДАРУЄМО ВАМ ЗНИЖКУ на наступні:
+//     <br>
+//     При замовленні від 10 тис грн - знижка 3%
+//     <br>
+//     При замовленні від 20 тис грн - знижка 5%
+
+//     Знижка діє необмежену кількість замовлень, проте лише до 01.04.2024 року
+
+//     А також, поспішаємо вас повідомити, що ми отримали поповнення брендів: Bilou, Carmex, Lador, Laneige.
+//     Зараз саме час оформити замовлення.
+//   </pre>
+
+//   <div style="
+//     display: 'flex';
+//     justifyContent: 'center',
+//     gap: 20px;
+//     margin-top: 20px;
+//   ">
+//     ${imagesHtml}
+//   </div>
+
+//   <a href="https://beautyblossom.com.ua/" style="
+//     display: block;
+//     width: 80%;
+//     margin: 20px auto;
+//     padding: 10px;
+//     border: 1px solid #868686;
+//     border-radius: 262px;
+//     text-align: center;
+//     text-decoration: none;
+//     background: #fed7f3;
+//     font-family: 'Noto Sans', sans-serif;
+//     font-weight: 400;
+//     font-size: 27px;
+//     text-align: center;
+//     color: #000;
+//   ">Перейти на сайт</a>
+
+//   <p style="color:#000000; font-size: 18px">Відправлено з сайту Beauty Blossom</p>
+
+//     <ul style="
+//       list-style-type: none;
+//       padding: 0;
+//       display: -webkit-inline-box;
+//       justifyContent: center;
+//       align-items: center;
+//     ">
+//       <li style="margin-right: 10px;">
+//         <a href="https://tinyurl.com/mh4zwdux" style="
+//           display: block;
+//           padding: 10px;
+//           border: 1px solid #868686;
+//           border-radius: 262px;
+//           text-align: center;
+//           text-decoration: none;
+//           background: #ecb7ff;
+//           font-family: 'Noto Sans', sans-serif;
+//           font-weight: 400;
+//           font-size: 27px;
+//           text-align: center;
+//           color: #000;
+//           min-width: 143px;
+//         ">Viber</a>
+//       </li>
+//       <li style="margin-right: 10px;">
+//         <a href="https://invite.viber.com/?g2=AQBjEaVPVoQvBVJyynmJykhGNyF1TYTNKqRX1LQe7fdkVyzcb%2BAcG6%2F4HUH74WIs&lang=ru" style="
+//           display: block;
+//           padding: 10px;
+//           border: 1px solid #868686;
+//           border-radius: 262px;
+//           text-align: center;
+//           text-decoration: none;
+//           background: #b7d8ff;
+//           font-family: 'Noto Sans', sans-serif;
+//           font-weight: 400;
+//           font-size: 27px;
+//           text-align: center;
+//           color: #000;
+//           margin-left: auto;
+//           margin-right: auto;
+//           min-width: 143px;
+
+//         ">Telegram</a>
+//       </li>
+//       <li>
+//         <a href="https://www.instagram.com/beauty_blossom_opt" style="
+//           display: block;
+//           padding: 10px;
+//           border: 1px solid #868686;
+//           border-radius: 262px;
+//           text-align: center;
+//           text-decoration: none;
+//           background: #ffdab7;
+//           font-family: 'Noto Sans', sans-serif;
+//           font-weight: 400;
+//           font-size: 27px;
+//           text-align: center;
+//           color: #000;
+//           min-width: 143px;
+
+//         ">Instagram</a>
+//       </li>
+//     </ul>
+
+//   <p style="color:#000000; font-size: 18px ">*При будь-яких питаннях звертайтесь до Світлани за номером: 0500529100 (Viber, Telegram)</p>
+//   <p style="color:#000000; font-size: 18px ">З повагою, команда Beauty Blossom!</p>
+//   <p style="color:#000000; font-size: 18px ">${new Date().toLocaleString()}</p>
+// </body>
