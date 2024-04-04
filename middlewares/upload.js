@@ -3,8 +3,13 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    const apiURL =
+      process.env.RENDERHOST === "production"
+        ? "/var/public/uploads"
+        : "public/uploads";
+
     // cb(null, "public/uploads");
-    cb(null, "/var/public/uploads");
+    cb(null, apiURL);
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));

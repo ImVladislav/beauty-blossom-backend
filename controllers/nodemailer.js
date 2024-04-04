@@ -59,6 +59,14 @@ const { ctrlWrapper } = require("../helpers");
 const fs = require("fs");
 const path = require("path");
 
+const process = require("process");
+// const apiURL =
+//   process.env.RENDERHOST === "production"
+//     ? "https://beautyblossom-api.onrender.com"
+//     : "http://localhost:3000";
+
+// console.log(apiURL);
+
 async function sendEmail(paths, req, res) {
   const { title, text, to, subject } = req.body;
 
@@ -206,8 +214,14 @@ async function sendEmail(paths, req, res) {
 }
 
 function deleteOldImages() {
+  const apiURL =
+    process.env.RENDERHOST === "production"
+      ? path.join("/var/public/uploads")
+      : path.join(__dirname, "../public/uploads");
+
+  console.log(apiURL);
   // const directory = path.join(__dirname, "../public/uploads");
-  const directory = path.join("/var/public/uploads");
+  const directory = apiURL;
   fs.readdir(directory, (err, files) => {
     if (err) throw err;
 
