@@ -215,9 +215,9 @@ async function sendEmail(paths, req, res) {
 
 function deleteOldImages() {
   const apiURL =
-    process.env.RENDERHOST === "production"
-      ? path.join("/var/public/uploads")
-      : path.join(__dirname, "../public/uploads");
+    process.env.NODE_ENV === "production"
+      ? "/var/public/uploads"
+      : "public/uploads";
 
   console.log(apiURL);
   // const directory = path.join(__dirname, "../public/uploads");

@@ -4,7 +4,7 @@ const path = require("path");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const apiURL =
-      process.env.RENDERHOST === "production"
+      process.env.NODE_ENV === "production"
         ? "/var/public/uploads"
         : "public/uploads";
 
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).array("file", 100);
 
-module.exports = { upload }; // Експорт об'єкта з middleware upload
+module.exports = { upload };
 // multer обєет налаштувань
 // destination це шлях тимчасової папки
 // файл нейм file це файл який ми зберігли в памяті
