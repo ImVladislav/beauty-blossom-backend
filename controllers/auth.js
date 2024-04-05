@@ -261,22 +261,64 @@ const changePassword = async (req, res) => {
   }
 };
 
+// const restorePassword = async (req, res) => {
+//   const { email } = req.body;
+
+//   try {
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       throw new HttpError(404, "User not found");
+//     }
+//     console.log(user._id);
+
+//     await user.save();
+
+//     const message = {
+//       to: email,
+//       subject: "Beauty-blossom - відновлення пароля",
+//       text: `Вами був створений запит на відновлення паролю на Beauty blossom. Для оновлення пароля перейдіть за посиланням нижче: \n https://www.beautyblossom.com.ua/forgotten/${user._id}`,
+//     };
+//     mailer(message);
+
+//     res.json({
+//       message: "Password changed successfully",
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
+
 const restorePassword = async (req, res) => {
   const { email } = req.body;
+
+  const generateNewPassword = () => {
+    const length = 10; // Довжина нового пароля
+    const charset =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let newPassword = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      newPassword += charset[randomIndex];
+    }
+    return newPassword;
+  };
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
       throw new HttpError(404, "User not found");
     }
-    console.log(user._id);
 
+    const newPassword = generateNewPassword(); // Отримання нового пароля (ваша логіка генерації)
+    const hashNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashNewPassword;
     await user.save();
 
     const message = {
       to: email,
       subject: "Beauty-blossom - відновлення пароля",
-      text: `Вами був створений запит на відновлення паролю на Beauty blossom. Для оновлення пароля перейдіть за посиланням нижче: \n https://www.beautyblossom.com.ua/forgotten/${user._id}`,
+      text: `Ваш новий пароль на Beauty blossom: ${newPassword}`,
     };
     mailer(message);
 
