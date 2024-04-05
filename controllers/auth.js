@@ -9,7 +9,7 @@ const HttpError = require("../helpers/HttpError");
 
 const { User } = require("../models/user");
 
-const mailer = require("./nodemailer");
+const mailer = require("./mailer");
 // const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
 
 // const { HttpError, ctrlWrapper } = require("../helpers");
