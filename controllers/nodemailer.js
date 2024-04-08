@@ -58,24 +58,61 @@ async function sendEmail(paths, req, res) {
             justifyContent: center;
             align-items: center;
           ">
-            <li style="margin-right: 10px;">
-              <a href="https://tinyurl.com/mh4zwdux" style="
-                display: block;
-                padding: 10px;
-                border: 1px solid #868686;
-                border-radius: 262px;
-                text-align: center;
-                text-decoration: none;
-                background: #ecb7ff;
-                font-family: 'Noto Sans', sans-serif;
-                font-weight: 400;
-                font-size: 27px;
-                text-align: center;
-                color: #000;
-                min-width: 143px;
-              ">Viber</a>
-            </li>
-            <!-- Додайте інші посилання для месенджерів, які ви використовуєте -->
+      <li style="margin-right: 10px;">
+        <a href="https://tinyurl.com/mh4zwdux" style="
+          display: block;
+          padding: 10px;
+          border: 1px solid #868686;
+          border-radius: 262px;
+          text-align: center;
+          text-decoration: none;
+          background: #ecb7ff;
+          font-family: 'Noto Sans', sans-serif;
+          font-weight: 400;
+          font-size: 27px;
+          text-align: center;
+          color: #000;
+          min-width: 143px;
+        ">Viber</a>
+      </li>
+      <li style="margin-right: 10px;">
+        <a href="https://invite.viber.com/?g2=AQBjEaVPVoQvBVJyynmJykhGNyF1TYTNKqRX1LQe7fdkVyzcb%2BAcG6%2F4HUH74WIs&lang=ru" style="
+          display: block;
+          padding: 10px;
+          border: 1px solid #868686;
+          border-radius: 262px;
+          text-align: center;
+          text-decoration: none;
+          background: #b7d8ff;
+          font-family: 'Noto Sans', sans-serif;
+          font-weight: 400;
+          font-size: 27px;
+          text-align: center;
+          color: #000;
+          margin-left: auto;
+          margin-right: auto;
+          min-width: 143px;
+
+        ">Telegram</a>
+      </li>
+      <li>
+        <a href="https://www.instagram.com/beauty_blossom_opt" style="
+          display: block;
+          padding: 10px;
+          border: 1px solid #868686;
+          border-radius: 262px;
+          text-align: center;
+          text-decoration: none;
+          background: #ffdab7;
+          font-family: 'Noto Sans', sans-serif;
+          font-weight: 400;
+          font-size: 27px;
+          text-align: center;
+          color: #000;
+          min-width: 143px;
+
+        ">Instagram</a>
+      </li>
           </ul>
 
           <p style="color:#000000; font-size: 18px ">*При будь-яких питаннях звертайтесь до Світлани за номером: 0500529100 (Viber, Telegram)</p>
