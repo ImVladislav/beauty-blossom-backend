@@ -59,7 +59,7 @@ async function sendEmail(paths, req, res) {
             align-items: center;
           ">
       <li style="margin-right: 10px;">
-        <a href="https://tinyurl.com/mh4zwdux" style="
+        <a href="https://invite.viber.com/?g2=AQBjEaVPVoQvBVJyynmJykhGNyF1TYTNKqRX1LQe7fdkVyzcb%2BAcG6%2F4HUH74WIs&lang=ru" style="
           display: block;
           padding: 10px;
           border: 1px solid #868686;
@@ -76,7 +76,7 @@ async function sendEmail(paths, req, res) {
         ">Viber</a>
       </li>
       <li style="margin-right: 10px;">
-        <a href="https://invite.viber.com/?g2=AQBjEaVPVoQvBVJyynmJykhGNyF1TYTNKqRX1LQe7fdkVyzcb%2BAcG6%2F4HUH74WIs&lang=ru" style="
+        <a href="https://t.me/+Eejgotzs-ktiMTIy" style="
           display: block;
           padding: 10px;
           border: 1px solid #868686;
