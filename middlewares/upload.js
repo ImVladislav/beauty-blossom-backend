@@ -3,12 +3,9 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const apiURL =
-      process.env.NODE_ENV === "production"
-        ? "/var/public/uploads"
-        : "public/uploads";
+    const apiURL = "/var/public/uploads";
+    // const apiURL = "public/uploads";
 
-    // cb(null, "public/uploads");
     cb(null, apiURL);
   },
   filename: function (req, file, cb) {

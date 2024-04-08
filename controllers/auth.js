@@ -309,7 +309,7 @@ const restorePassword = async (req, res) => {
     if (!user) {
       throw new HttpError(404, "User not found");
     }
-
+    console.log(email);
     const newPassword = generateNewPassword(); // Отримання нового пароля (ваша логіка генерації)
     const hashNewPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashNewPassword;

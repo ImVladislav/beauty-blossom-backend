@@ -1,30 +1,27 @@
 const nodemailer = require("nodemailer");
+const { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS } = process.env;
 
-const transporter = nodemailer.createTransport(
-  {
-    host: "smtp.ukr.net",
-    port: 2525,
-    secure: true, // true for 465, false for other ports
-
-    //         tls: {
-    //     rejectUnauthorized: false // Вимкнення перевірки сертифікатів
-    // },
-
-    auth: {
-      user: "beautyblossom@ukr.net",
-      pass: "mCWZuZ4ceDExLMmk",
-    },
+const transporter = nodemailer.createTransport({
+  host: EMAIL_HOST,
+  port: EMAIL_PORT,
+  secure: true,
+  auth: {
+    user: EMAIL_USER,
+    pass: EMAIL_PASS,
   },
-  {
-    from: "beautyblossom@ukr.net",
-  }
-);
+});
 
-const mailer = (message) => {
-  transporter.sendMail(message, (err, info) => {
-    if (err) return console.log(err);
-    console.log("Email sent: ", info);
-  });
+const mailer = async (message) => {
+  try {
+    await transporter.sendMail({
+      ...message,
+      from: EMAIL_USER,
+    });
+    console.log("Email sent successfully");
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw new Error("Error sending email");
+  }
 };
 
 module.exports = mailer;
