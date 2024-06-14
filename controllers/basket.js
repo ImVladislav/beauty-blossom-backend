@@ -96,14 +96,11 @@ const deleteAllByOwner = async (req, res) => {
 };
 
 cron.schedule("0 0 * * *", async () => {
-  // 00:00:00 every day
-  // cron.schedule("*/10 * * * * *", async () => {
-  // every 10 seconds
   try {
     const now = new Date();
-    // const cutoffDate = new Date(now.getTime() - 30 * 1000); // 30 секунд тому
+
     const cutoffDate = new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000);
-    // Видалити всі записи, створені більше ніж 30 секунд тому
+
     const result = await basket.deleteMany({ createdAt: { $lt: cutoffDate } });
     console.log(`Deleted ${result.deletedCount} items from the basket.`);
   } catch (error) {
