@@ -13,6 +13,7 @@ const basket = require("./routes/api/basket");
 const feedbackRouter = require("./routes/api/feedback");
 const emailRouter = require("./routes/api/email");
 const searchUserRouter = require("./routes/api/searchUser");
+const brandsRouter = require("./routes/api/brands");
 
 const path = require("path");
 
@@ -52,6 +53,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/auth", authRouter);
 app.use("/api/goods", goodsRouter);
+app.use("/api/brands", brandsRouter);
 app.use("/api/orders/", ordersRouter);
 app.use("/api/feedback", feedbackRouter);
 app.use("/api/inProgressWood", inProgressWood);
