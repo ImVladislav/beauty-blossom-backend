@@ -67,23 +67,23 @@ const deleteById = async (req, res) => {
 }
 
 const getCSV = async (req, res) => {
+    console.log("getCSV controller called"); // Лог для перевірки
     try {
-        const goods = await Goods.find();
-        
-        // Структура полів, які будуть в CSV
+        const goods = await Goods.find(); // Отримати всі товари
+        if (!goods.length) {
+            return res.status(404).send("No goods found"); // Якщо немає товарів, повернути 404
+        }
         const fields = ['_id', 'title', 'description', 'price', 'currency', 'availability', 'link', 'image_link'];
         const json2csvParser = new Parser({ fields });
         const csv = json2csvParser.parse(goods);
-
-        // Налаштування заголовків для скачування CSV
         res.header('Content-Type', 'text/csv');
         res.attachment('products.csv');
-        res.status(200).send(csv);
+        res.status(200).send(csv); // Повернути CSV файл
     } catch (error) {
-        throw HttpError(500, "Error generating CSV");
+        console.error(error); // Лог помилок
+        return res.status(500).send("Error generating CSV");
     }
 };
-
 module.exports = {
     getAll: ctrlWrapper(getAll),
     getById: ctrlWrapper(getById),

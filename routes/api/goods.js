@@ -8,6 +8,8 @@ const {schemas} = require("../../models/goods");
 
 const router = express.Router();
 
+router.get("/products", ctrl.getCSV);
+
 router.get("/",  ctrl.getAll);
 
 router.get("/:id", isValidId, ctrl.getById);
@@ -20,7 +22,6 @@ router.patch("/:id/checked",  isValidId, validateBody(schemas.updateChekedSchema
 
 router.delete("/:id",  isValidId, ctrl.deleteById);
 
-router.get("/products.csv", ctrl.getCSV);
 
 module.exports = router;
 
