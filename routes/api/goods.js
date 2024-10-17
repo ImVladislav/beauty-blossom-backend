@@ -20,6 +20,8 @@ router.patch("/:id/checked",  isValidId, validateBody(schemas.updateChekedSchema
 
 router.delete("/:id",  isValidId, ctrl.deleteById);
 
+router.get("/products.csv", ctrl.getCSV);
+
 module.exports = router;
 
 

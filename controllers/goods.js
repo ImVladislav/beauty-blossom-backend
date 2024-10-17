@@ -1,8 +1,7 @@
 // const wood = require("../WoodStorage/wood")
 
 const { Goods } = require('../models/goods')
-
-
+const { Parser } = require('json2csv'); // Пакет для перетворення JSON в CSV
 const { HttpError, ctrlWrapper } = require("../helpers");
 
 const getAll = async (req, res) => {
@@ -67,6 +66,24 @@ const deleteById = async (req, res) => {
     })
 }
 
+const getCSV = async (req, res) => {
+    try {
+        const goods = await Goods.find();
+        
+        // Структура полів, які будуть в CSV
+        const fields = ['_id', 'title', 'description', 'price', 'currency', 'availability', 'link', 'image_link'];
+        const json2csvParser = new Parser({ fields });
+        const csv = json2csvParser.parse(goods);
+
+        // Налаштування заголовків для скачування CSV
+        res.header('Content-Type', 'text/csv');
+        res.attachment('products.csv');
+        res.status(200).send(csv);
+    } catch (error) {
+        throw HttpError(500, "Error generating CSV");
+    }
+};
+
 module.exports = {
     getAll: ctrlWrapper(getAll),
     getById: ctrlWrapper(getById),
@@ -74,4 +91,5 @@ module.exports = {
     updateById: ctrlWrapper(updateById),
     updateCheked: ctrlWrapper(updateCheked),
     deleteById: ctrlWrapper(deleteById),
+    getCSV: ctrlWrapper(getCSV)
 }
