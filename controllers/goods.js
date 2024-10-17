@@ -73,7 +73,7 @@ const getCSV = async (req, res) => {
         if (!goods.length) {
             return res.status(404).send("No goods found"); // Якщо немає товарів, повернути 404
         }
-        const fields = ['_id', 'title', 'description', 'price', 'currency', 'availability', 'link', 'image_link'];
+        const fields = ['name', 'article', 'code', 'amount', 'description', 'priceOPT', 'price', 'brand', 'images', 'country', 'new', 'sale', 'category', 'subCategory', 'subSubCategory'];
         const json2csvParser = new Parser({ fields });
         const csv = json2csvParser.parse(goods);
         res.header('Content-Type', 'text/csv');
