@@ -14,7 +14,7 @@ const goodsSchema = new Schema({
     brand: String,
     images: String,
     country: String,
-    availability: String,
+    availability: Boolean,
     id:Number,
 
     title: String,
@@ -59,7 +59,7 @@ const addSchema = Joi.object({
     new: Joi.boolean().default(false),
     sale: Joi.boolean().required(),
     country: Joi.string().required(),
-    availability: Joi.string(),
+    availability: Joi.boolean(),
     title: Joi.string(),
     condition: Joi.string(),
     id: Joi.number(),

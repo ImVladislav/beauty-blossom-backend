@@ -78,7 +78,7 @@ const getCSV = async (req, res) => {
             link: `https://beautyblossom.com.ua/product/${item.id}`, // Використовуємо 'id'
             id: item._id,
             title: item.name,
-            availability: item.amount > 0 ? 'in stock' : 'is expected',
+            availability: item.amount > 0,
             condition: item.new ? 'Новий' : '',
 
 
