@@ -65,22 +65,30 @@ const deleteById = async (req, res) => {
         message: "Delete success"
     })
 }
-
 const getCSV = async (req, res) => {
-    console.log("getCSV controller called"); // Лог для перевірки
     try {
         const goods = await Goods.find(); // Отримати всі товари
         if (!goods.length) {
-            return res.status(404).send("No goods found"); // Якщо немає товарів, повернути 404
+            return res.status(404).send("No goods found");
         }
-        const fields = ['name', 'article', 'code', 'amount', 'description', 'priceOPT', 'price', 'brand', 'images', 'country', 'new', 'sale', 'category', 'subCategory', 'subSubCategory'];
+
+        // Додаємо властивість 'link' та 'availability' до кожного товару
+        const updatedGoods = goods.map(item => ({
+            ...item.toObject(), // Перетворюємо товар на звичайний об'єкт
+            link: `https://beautyblossom.com.ua/product/${item.id}`, // Використовуємо 'id'
+            availability: item.amount > 0 // Якщо amount більше 0, availability === true, інакше false
+        }));
+
+        // Визначаємо поля, які мають бути у CSV-файлі
+        const fields = ['name', 'article', 'code', 'amount', 'description', 'priceOPT', 'price', 'link', 'brand', 'images', 'country', 'new', 'sale', 'category', 'subCategory', 'subSubCategory', 'availability'];
         const json2csvParser = new Parser({ fields });
-        const csv = json2csvParser.parse(goods);
+        const csv = json2csvParser.parse(updatedGoods); // Перетворюємо дані у CSV
+
         res.header('Content-Type', 'text/csv');
         res.attachment('products.csv');
-        res.status(200).send(csv); // Повернути CSV файл
+        res.status(200).send(csv); // Відправляємо CSV-файл
     } catch (error) {
-        console.error(error); // Лог помилок
+        console.error(error); // Логування помилок
         return res.status(500).send("Error generating CSV");
     }
 };
