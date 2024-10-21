@@ -16,7 +16,7 @@ const goodsSchema = new Schema({
     country: String,
     availability: String,
     id:Number,
-
+    
     title: String,
     condition: String, 
     

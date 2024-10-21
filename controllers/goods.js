@@ -72,20 +72,18 @@ const getCSV = async (req, res) => {
             return res.status(404).send("No goods found");
         }
 
-        // Додаємо властивість 'link' та 'availability' до кожного товару
+        // Додаємо властивість 'link', 'availability' та 'condition' до кожного товару
         const updatedGoods = goods.map(item => ({
             ...item.toObject(), // Перетворюємо товар на звичайний об'єкт
             link: `https://beautyblossom.com.ua/product/${item.id}`, // Використовуємо 'id'
             id: item._id,
             title: item.name,
-            availability: item.amount > 0? 'in stock' : '',
-            condition: item.new ? 'Новий' : '',
-
-
+            availability: item.amount > 0 ? 'in stock' : '',
+            condition:'new'
         }));
 
         // Визначаємо поля, які мають бути у CSV-файлі
-        const fields = ['title', 'condition','id','name', 'article', 'code', 'amount', 'description', 'priceOPT', 'price', 'link', 'brand', 'images', 'country', 'new', 'sale', 'category', 'subCategory', 'subSubCategory', 'availability'];
+        const fields = ['title', 'condition', 'id', 'name', 'article', 'code', 'amount', 'description', 'priceOPT', 'price', 'link', 'brand', 'images', 'country', 'new', 'sale', 'category', 'subCategory', 'subSubCategory', 'availability'];
         const json2csvParser = new Parser({ fields });
         const csv = json2csvParser.parse(updatedGoods); // Перетворюємо дані у CSV
 
