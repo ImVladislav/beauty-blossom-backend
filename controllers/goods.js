@@ -79,11 +79,12 @@ const getCSV = async (req, res) => {
             id: item._id,
             title: item.name,
             availability: item.amount > 0 ? 'in stock' : 'out of stock',
-            condition:'new'
+            condition:'new',
+            image_link: item.images
         }));
 
         // Визначаємо поля, які мають бути у CSV-файлі
-        const fields = ['title', 'condition', 'id', 'name', 'article', 'code', 'amount', 'description', 'priceOPT', 'price', 'link', 'brand', 'images', 'country', 'new', 'sale', 'category', 'subCategory', 'subSubCategory', 'availability'];
+        const fields = ['title', 'condition', 'id', 'name', 'article', 'code', 'amount', 'description', 'priceOPT', 'price', 'link', 'brand', 'image_link', 'country', 'new', 'sale', 'category', 'subCategory', 'subSubCategory', 'availability'];
         const json2csvParser = new Parser({ fields });
         const csv = json2csvParser.parse(updatedGoods); // Перетворюємо дані у CSV
 
