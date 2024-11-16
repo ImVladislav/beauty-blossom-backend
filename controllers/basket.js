@@ -99,7 +99,9 @@ cron.schedule("0 0 * * *", async () => {
   try {
     const now = new Date();
 
-    const cutoffDate = new Date(now.getTime() - 11 * 24 * 60 * 60 * 1000);
+    const cutoffDate = new Date(now.getTime() - 11 
+     
+    * 24 * 60 * 60 * 1000);
 
     const result = await basket.deleteMany({ createdAt: { $lt: cutoffDate } });
     console.log(`Deleted ${result.deletedCount} items from the basket.`);
