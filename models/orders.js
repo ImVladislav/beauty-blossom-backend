@@ -101,6 +101,10 @@ const ordersSchema = new Schema({
           quantity: {
             type: Number,
               required: true     
+          },
+          sale: {
+            type: Boolean,
+              required: false     
           }
         },
     ],
@@ -133,7 +137,8 @@ const addSchema = Joi.object({
         quantity: Joi.number().required(),
         amount: Joi.number().required(),
         images: Joi.string(),
-        code: Joi.string().required()
+        code: Joi.string().required(),
+        sale: Joi.bool()
     })).required()
 
 })
