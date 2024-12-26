@@ -9,7 +9,7 @@ const getAll = async (req, res) => {
   // const {page = 1, limit = 10} = req.query;
   // req.query обєкт параметрів пошуку
   // const skip = (page - 1) * limit;
-  const result = await Goods.find().lean();
+  const result = await Goods.find();
 
   // const result = await Wood.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
 
@@ -17,6 +17,9 @@ const getAll = async (req, res) => {
   // populate бере айді знаходить овенра і вставляє обєкт з його данними
   // 2 арг список полів які треба повернути
   // skip скілеи пропустити обєктів в базі, limit скільки повернути
+  if (!result.length) {
+    throw HttpError(404, "No goods found");
+  }
   res.json(result);
 };
 
