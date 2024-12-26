@@ -9,7 +9,7 @@ const getAll = async (req, res) => {
   // const {page = 1, limit = 10} = req.query;
   // req.query обєкт параметрів пошуку
   // const skip = (page - 1) * limit;
-  const result = await Goods.find({}).lean();
+  const result = await Goods.find().lean();
 
   // const result = await Wood.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
 
