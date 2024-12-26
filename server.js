@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const app = require("./app");
 
-const { NEW_DB_HOST, PORT = 3001 } = process.env;
+const { DB_HOST, PORT = 3001 } = process.env;
 
 // const { NEW_DB_HOST, PORT = 3001 } = process.env;
 // prcess.env змынне оточення console.log(process.env)
@@ -10,7 +10,7 @@ const { NEW_DB_HOST, PORT = 3001 } = process.env;
 mongoose.set("strictQuery", true);
 
 mongoose
-  .connect(NEW_DB_HOST)
+  .connect(DB_HOST)
   // .connect(NEW_DB_HOST)
   .then(() => {
     app.listen(PORT, () => {
