@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const app = require("./app");
 
-const { DB_HOST, PORT = 3001 } = process.env;
+const { DB_HOST, PORT = 3002 } = process.env;
 
 // const { NEW_DB_HOST, PORT = 3001 } = process.env;
 // prcess.env змынне оточення console.log(process.env)
