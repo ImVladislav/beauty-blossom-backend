@@ -45,3 +45,5 @@ GET / 05-04-2024_06:35:51
 GET /api/auth/restorePassword 06-04-2024_05:57:41
 GET /api/email/sendemail 08-04-2024_01:24:24
 GET /favicon.ico 08-04-2024_01:24:25
+GET /product/2021293 16-11-2024_02:28:30
+GET /favicon.ico 16-11-2024_02:28:31
