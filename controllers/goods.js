@@ -156,20 +156,21 @@ const getXML = async (req, res) => {
         channel: {
           title: "Beauty Blossom - Online Store",
           link: "https://beautyblossom.com.ua",
-          description: "This is a sample feed containing the required and recommended attributes for Google Shopping.",
+          description: "Google Shopping XML Feed",
           item: updatedGoods,
         },
       },
     };
 
-    const builder = new xml2js.Builder({ headless: true });
+    const builder = new xml2js.Builder({ headless: true, xmldec: { version: "1.0", encoding: "UTF-8" } });
     const xml = builder.buildObject(feed);
 
-    // ✅ Виправлені заголовки
-    res.setHeader("Content-Type", "application/xml");
-    res.setHeader("Content-Disposition", "attachment; filename=google_feed.xml");
+    // ✅ Виправлені заголовки для миттєвого завантаження
+    res.setHeader("Content-Type", "application/octet-stream");
+    res.setHeader("Content-Disposition", 'attachment; filename="google_feed.xml"');
     res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
     res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
 
     res.status(200).send(xml);
   } catch (error) {
