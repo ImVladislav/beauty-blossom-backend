@@ -131,31 +131,41 @@ const getXML = async (req, res) => {
     }
 
     const updatedGoods = goods.map((item) => ({
-      id: item._id,
-      title: item.name,
-      article: item.article || "",
-      code: item.code || "",
-      amount: item.amount,
-      description: item.description || "",
-      priceOPT: item.priceOPT || 0,
-      price: item.price || 0,
-      link: `https://beautyblossom.com.ua/product/${item.id}`,
-      brand: item.brand || "",
-      image_link: item.images || "",
-      country: item.country || "",
-      new: item.new || false,
-      sale: item.sale || false,
-      category: item.category || "",
-      subCategory: item.subCategory || "",
-      subSubCategory: item.subSubCategory || "",
-      availability: item.amount > 0 ? "in stock" : "out of stock",
+      "g:id": item._id,
+      "g:title": item.name,
+      "g:description": item.description || "No description available",
+      "g:link": `https://beautyblossom.com.ua/product/${item._id}`,
+      "g:image_link": item.images || "",
+      "g:condition": "new",
+      "g:availability": item.amount > 0 ? "in stock" : "out of stock",
+      "g:price": `${item.price} USD`,
+      "g:shipping": {
+        "g:country": "UA",
+        "g:service": "Standard",
+        "g:price": "0.00 UAH",
+      },
+      "g:gtin": item.gtin || "",
+      "g:brand": item.brand || "Unknown",
+      "g:mpn": item.article || "",
     }));
 
-    const builder = new xml2js.Builder();
-    const xml = builder.buildObject({ products: { product: updatedGoods } });
+    const feed = {
+      rss: {
+        $: { "xmlns:g": "http://base.google.com/ns/1.0", version: "2.0" },
+        channel: {
+          title: "Beauty Blossom - Online Store",
+          link: "https://beautyblossom.com.ua",
+          description: "This is a sample feed containing the required and recommended attributes for Google Shopping.",
+          item: updatedGoods,
+        },
+      },
+    };
+
+    const builder = new xml2js.Builder({ headless: true });
+    const xml = builder.buildObject(feed);
 
     res.header("Content-Type", "application/xml");
-    res.attachment("products.xml");
+    res.attachment("google_feed.xml");
     res.status(200).send(xml);
   } catch (error) {
     console.error(error);
