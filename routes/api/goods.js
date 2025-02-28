@@ -8,9 +8,9 @@ const {schemas} = require("../../models/goods");
 
 const router = express.Router();
 
-router.get("/products", ctrl.getCSV);
-
 router.get("/productsxml", ctrl.getXML);
+
+router.get("/products", ctrl.getCSV);
 
 
 router.get("/",  ctrl.getAll);
