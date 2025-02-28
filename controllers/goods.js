@@ -3,6 +3,7 @@
 const { Goods } = require("../models/goods");
 const { Parser } = require("json2csv"); // Пакет для перетворення JSON в CSV
 const { HttpError, ctrlWrapper } = require("../helpers");
+const xml2js = require("xml2js");
 
 const getAll = async (req, res) => {
   // const {_id: owner} = req.user;
@@ -120,6 +121,48 @@ const getCSV = async (req, res) => {
     return res.status(500).send("Error generating CSV");
   }
 };
+
+// Функція генерації XML
+const getXML = async (req, res) => {
+  try {
+    const goods = await Goods.find();
+    if (!goods.length) {
+      return res.status(404).send("No goods found");
+    }
+
+    const updatedGoods = goods.map((item) => ({
+      id: item._id,
+      title: item.name,
+      article: item.article || "",
+      code: item.code || "",
+      amount: item.amount,
+      description: item.description || "",
+      priceOPT: item.priceOPT || 0,
+      price: item.price || 0,
+      link: `https://beautyblossom.com.ua/product/${item.id}`,
+      brand: item.brand || "",
+      image_link: item.images || "",
+      country: item.country || "",
+      new: item.new || false,
+      sale: item.sale || false,
+      category: item.category || "",
+      subCategory: item.subCategory || "",
+      subSubCategory: item.subSubCategory || "",
+      availability: item.amount > 0 ? "in stock" : "out of stock",
+    }));
+
+    const builder = new xml2js.Builder();
+    const xml = builder.buildObject({ products: { product: updatedGoods } });
+
+    res.header("Content-Type", "application/xml");
+    res.attachment("products.xml");
+    res.status(200).send(xml);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Error generating XML");
+  }
+};
+
 module.exports = {
   getAll: ctrlWrapper(getAll),
   getById: ctrlWrapper(getById),
@@ -128,4 +171,5 @@ module.exports = {
   updateCheked: ctrlWrapper(updateCheked),
   deleteById: ctrlWrapper(deleteById),
   getCSV: ctrlWrapper(getCSV),
+  getXML: ctrlWrapper(getXML), // Додаємо новий маршрут
 };

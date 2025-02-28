@@ -10,6 +10,9 @@ const router = express.Router();
 
 router.get("/products", ctrl.getCSV);
 
+router.get("/productsxml", ctrl.getXML);
+
+
 router.get("/",  ctrl.getAll);
 
 router.get("/:id", isValidId, ctrl.getById);
