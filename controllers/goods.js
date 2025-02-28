@@ -123,6 +123,7 @@ const getCSV = async (req, res) => {
 };
 
 // Функція генерації XML
+
 const getXML = async (req, res) => {
   try {
     const goods = await Goods.find();
@@ -164,14 +165,19 @@ const getXML = async (req, res) => {
     const builder = new xml2js.Builder({ headless: true });
     const xml = builder.buildObject(feed);
 
-    res.header("Content-Type", "application/xml");
-    res.attachment("google_feed.xml");
+    // ✅ Виправлені заголовки
+    res.setHeader("Content-Type", "application/xml");
+    res.setHeader("Content-Disposition", "attachment; filename=google_feed.xml");
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+    res.setHeader("Pragma", "no-cache");
+
     res.status(200).send(xml);
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error generating XML");
   }
 };
+
 
 module.exports = {
   getAll: ctrlWrapper(getAll),
