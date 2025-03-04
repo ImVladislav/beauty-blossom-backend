@@ -132,6 +132,7 @@ const getXML = async (req, res) => {
     }
 
     const updatedGoods = goods.map((item) => ({
+      "id": item._id,
       "g:id": item._id,
       "g:title": item.name,
       "g:description": item.description || "No description available",
