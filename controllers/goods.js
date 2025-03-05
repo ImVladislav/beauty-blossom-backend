@@ -141,6 +141,7 @@ const getXML = async (req, res) => {
       "g:condition": "new",
       "g:availability": item.amount > 0 ? "in stock" : "out of stock",
       "g:price": `${item.price} USD`,
+      "price": `${item.price} UAH`,
       "g:shipping": {
         "g:country": "UA",
         "g:service": "Standard",
