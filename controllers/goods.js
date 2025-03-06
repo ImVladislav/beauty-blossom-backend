@@ -132,9 +132,9 @@ const getXML = async (req, res) => {
     }
 
     const updatedGoods = goods.map((item) => ({
-      "id": item._id,
-      "g:id": item._id,
-      "g:title": item.name,
+      "id": item._id ? String(item._id) : "N/A",  // Переконаємося, що значення є рядком
+      "g:id": item._id ? String(item._id) : "N/A",
+      "g:title": item.name || "No title",
       "g:description": item.description || "No description available",
       "g:link": `https://beautyblossom.com.ua/product/${item._id}`,
       "g:image_link": item.images || "",
@@ -151,6 +151,7 @@ const getXML = async (req, res) => {
       "g:brand": item.brand || "Unknown",
       "g:mpn": item.article || "",
     }));
+    
 
     const feed = {
       rss: {
