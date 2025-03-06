@@ -140,7 +140,7 @@ const getXML = async (req, res) => {
       "g:image_link": item.images || "",
       "g:condition": "new",
       "g:availability": item.amount > 0 ? "in stock" : "out of stock",
-      "g:price": `${item.price} USD`,
+      "g:price": `${item.price} UAH`,
       "price": `${item.price} UAH`,
       "g:shipping": {
         "g:country": "UA",
@@ -167,9 +167,8 @@ const getXML = async (req, res) => {
     const builder = new xml2js.Builder({ headless: true, xmldec: { version: "1.0", encoding: "UTF-8" } });
     const xml = builder.buildObject(feed);
 
-    // ✅ Виправлені заголовки для миттєвого завантаження
-    res.setHeader("Content-Type", "application/octet-stream");
-    res.setHeader("Content-Disposition", 'attachment; filename="google_feed.xml"');
+    // ✅ Оновлені заголовки для відкриття XML у новій вкладці
+    res.setHeader("Content-Type", "application/xml");
     res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
     res.setHeader("Pragma", "no-cache");
     res.setHeader("Expires", "0");
