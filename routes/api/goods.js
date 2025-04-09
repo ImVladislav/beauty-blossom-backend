@@ -8,7 +8,7 @@ const {schemas} = require("../../models/goods");
 
 const router = express.Router();
 
-router.get("/productsxml", ctrl.getXML);
+router.get("/googlefeed", ctrl.getXML);
 
 router.get("/products", ctrl.getCSV);
 
