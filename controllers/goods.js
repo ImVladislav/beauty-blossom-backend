@@ -132,7 +132,6 @@ const getXML = async (req, res) => {
     }
 
     const updatedGoods = goods.map((item) => ({
-      "id": item._id ? String(item._id) : "N/A",  // Переконаємося, що значення є рядком
       "g:id": item._id ? String(item._id) : "N/A",
       "g:title": item.name || "No title",
       "g:description": item.description || "No description available",
@@ -140,7 +139,7 @@ const getXML = async (req, res) => {
       "g:image_link": item.images || "",
       "g:condition": "new",
       "g:availability": item.amount > 0 ? "in stock" : "out of stock",
-      "g:price": `${item.price} UAH`,
+      "g:price": item.price ? `${item.price} UAH` : "0.00 UAH",
       "g:shipping": {
         "g:country": "UA",
         "g:service": "Standard",
