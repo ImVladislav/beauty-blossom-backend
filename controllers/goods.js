@@ -139,7 +139,7 @@ const getXML = async (req, res) => {
       "g:image_link": item.images || "",
       "g:condition": "new",
       "g:availability": item.amount > 0 ? "in stock" : "out of stock",
-      "g:price": item.price ? `${item.price} UAH` : "0.00 UAH",
+      "g:price": `${item.price} UAH`,
       "g:shipping": {
         "g:country": "UA",
         "g:service": "Standard",
