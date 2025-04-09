@@ -141,13 +141,12 @@ const getXML = async (req, res) => {
       "g:condition": "new",
       "g:availability": item.amount > 0 ? "in stock" : "out of stock",
       "g:price": `${item.price} UAH`,
-      "price": `${item.price} UAH`,
       "g:shipping": {
         "g:country": "UA",
         "g:service": "Standard",
         "g:price": "0.00 UAH",
       },
-      "g:gtin": item.gtin || "",
+  
       "g:brand": item.brand || "Unknown",
       "g:mpn": item.article || "",
     }));
