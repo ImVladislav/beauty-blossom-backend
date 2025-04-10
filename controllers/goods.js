@@ -24,6 +24,62 @@ const getAll = async (req, res) => {
   res.json(result);
 };
 
+const getAllAndPaginate = async (req, res) => {
+  const { page = 1, limit = 32 } = req.query;
+  const skip = (+page - 1) * +limit;
+  const products = await Goods.find({}, "-createdAt -updatedAt", {
+    skip,
+    limit: +limit,
+  });
+
+  console.log(skip, limit);
+  res.json({
+    totalItems: products.length,
+    totalPages: Math.ceil(products.length / +limit),
+    currentPage: +page,
+    products,
+  });
+};
+
+const getNews = async (req, res) => {
+  const { page = 1, limit = 32 } = req.query;
+  const skip = (+page - 1) * +limit;
+
+  // 1. Загальна кількість товарів
+  const totalItems = await Goods.countDocuments({ new: true });
+
+  // 2. Список товарів з пагінацією
+  const products = await Goods.find({ new: true }, "-createdAt -updatedAt", {
+    skip,
+    limit: +limit,
+  });
+
+  res.json({
+    totalItems,
+    totalPages: Math.ceil(products.length / +limit),
+    currentPage: +page,
+    items: products,
+  });
+};
+const getSales = async (req, res) => {
+  const { page = 1, limit = 32 } = req.query;
+  const skip = (+page - 1) * +limit;
+
+  const totalItems = await Goods.countDocuments({ sale: true });
+
+  const products = await Goods.find({ sale: true }, "-createdAt -updatedAt", {
+    skip,
+    limit: +limit,
+  });
+
+  res.json({
+    totalItems,
+    totalPages: Math.ceil(totalItems / +limit),
+    currentPage: +page,
+    items: products,
+  });
+};
+
 const getById = async (req, res) => {
   const { id } = req.params;
   // const result = await Book.findOne({_id: id})
@@ -145,11 +201,10 @@ const getXML = async (req, res) => {
         "g:service": "Standard",
         "g:price": "0.00 UAH",
       },
-  
+
       "g:brand": item.brand || "Unknown",
       "g:mpn": item.article || "",
     }));
-    
 
     const feed = {
       rss: {
@@ -163,12 +218,18 @@ const getXML = async (req, res) => {
       },
     };
 
-    const builder = new xml2js.Builder({ headless: true, xmldec: { version: "1.0", encoding: "UTF-8" } });
+    const builder = new xml2js.Builder({
+      headless: true,
+      xmldec: { version: "1.0", encoding: "UTF-8" },
+    });
     const xml = builder.buildObject(feed);
 
     // ✅ Оновлені заголовки для відкриття XML у новій вкладці
     res.setHeader("Content-Type", "application/xml");
-    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+    res.setHeader(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, max-age=0"
+    );
     res.setHeader("Pragma", "no-cache");
     res.setHeader("Expires", "0");
 
@@ -179,7 +240,6 @@ const getXML = async (req, res) => {
   }
 };
 
-
 module.exports = {
   getAll: ctrlWrapper(getAll),
   getById: ctrlWrapper(getById),
@@ -189,4 +249,7 @@ module.exports = {
   deleteById: ctrlWrapper(deleteById),
   getCSV: ctrlWrapper(getCSV),
   getXML: ctrlWrapper(getXML), // Додаємо новий маршрут
+  getNews: ctrlWrapper(getNews),
+  getSales: ctrlWrapper(getSales),
+  getAllAndPaginate: ctrlWrapper(getAllAndPaginate),
 };
