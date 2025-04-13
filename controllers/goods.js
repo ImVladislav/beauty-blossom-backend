@@ -18,14 +18,16 @@ const {reverseTransliterate} = require("../utils/reverseTransliterate");
   // const result = await Goods.find();
 
   const getAll = async (req, res) => {
-    const { brand, category } = req.query;
-    const query = {};
+    const { brand, category, sort = "default", page = 1, limit = 3000 } = req.query;
   
+    const query = {};
     const normalize = (val) => val?.trim();
   
+   
     if (brand) {
+      const decodedBrand = decodeURIComponent(brand);
       query.brand = {
-        $regex: new RegExp(`^${normalize(brand)}$`, "i"),
+        $regex: new RegExp(`^${decodedBrand.trim()}$`, "i") // ← чутливість до регістру прибрана
       };
     }
   
@@ -52,17 +54,73 @@ const {reverseTransliterate} = require("../utils/reverseTransliterate");
       }
     }
   
-    console.log("QUERY:", query);
+    // ==== PAGINATION ====
+    const skip = (parseInt(page) - 1) * parseInt(limit);
   
-    const result = await Goods.find(query);
+    // ==== SORTING ====
+    let sortOptions = {};
+    switch (sort) {
+      case "nameABC":
+        sortOptions = { name: 1 };
+        break;
+      case "nameCBA":
+        sortOptions = { name: -1 };
+        break;
+      case "priceMin":
+        sortOptions = { price: 1 };
+        break;
+      case "priceMax":
+        sortOptions = { price: -1 };
+        break;
+      case "inStock":
+        query.amount = { $gte: 1 };
+        break;
+      default:
+        sortOptions = {}; // no sorting
+    }
+  
+    const result = await Goods.find(query)
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(parseInt(limit));
+  
+    const totalCount = await Goods.countDocuments(query);
   
     if (!result.length) {
       throw HttpError(404, "No goods found");
     }
   
-    res.json(result);
+    res.json({
+      page: parseInt(page),
+      limit: parseInt(limit),
+      total: totalCount,
+      totalPages: Math.ceil(totalCount / limit),
+      goods: result,
+    });
   };
+
+  const getNews = async (req, res) => {
+    const { page = 1, limit = 32 } = req.query;
+    const skip = (+page - 1) * +limit;
   
+    // 1. Загальна кількість товарів
+    const totalItems = await Goods.countDocuments({ new: true });
+  
+    // 2. Список товарів з пагінацією
+    const products = await Goods.find({ new: true }, "-createdAt -updatedAt", {
+      skip,
+      limit: +limit,
+    });
+  
+    res.json({
+      totalItems,
+      totalPages: Math.ceil(products.length / +limit),
+      currentPage: +page,
+      items: products,
+    });
+  };
+
+
   // const result = await Wood.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
 
   // -createdAt -updatedAt поля які не треба брати з бази
@@ -235,4 +293,5 @@ module.exports = {
   deleteById: ctrlWrapper(deleteById),
   getCSV: ctrlWrapper(getCSV),
   getXML: ctrlWrapper(getXML), // Додаємо новий маршрут
+  getNews: ctrlWrapper(getNews),
 };
