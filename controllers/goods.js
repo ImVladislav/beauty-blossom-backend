@@ -4,25 +4,71 @@ const { Goods } = require("../models/goods");
 const { Parser } = require("json2csv"); // Пакет для перетворення JSON в CSV
 const { HttpError, ctrlWrapper } = require("../helpers");
 const xml2js = require("xml2js");
+const {reverseTransliterate} = require("../utils/reverseTransliterate");
 
-const getAll = async (req, res) => {
+
+// const getAll = async (req, res) => {
+
   // const {_id: owner} = req.user;
   // const {page = 1, limit = 10} = req.query;
   // req.query обєкт параметрів пошуку
   // const skip = (page - 1) * limit;
-  const result = await Goods.find();
 
+
+  // const result = await Goods.find();
+
+  const getAll = async (req, res) => {
+    const { brand, category } = req.query;
+    const query = {};
+  
+    const normalize = (val) => val?.trim();
+  
+    if (brand) {
+      query.brand = {
+        $regex: new RegExp(`^${normalize(brand)}$`, "i"),
+      };
+    }
+  
+    if (category) {
+      const decoded = decodeURIComponent(category);
+      const parts = decoded
+        .split("/")
+        .map((str) => reverseTransliterate(str.trim()));
+  
+      if (parts[0]) {
+        query.category = {
+          $regex: new RegExp(`^${normalize(parts[0])}$`, "i"),
+        };
+      }
+      if (parts[1]) {
+        query.subCategory = {
+          $regex: new RegExp(`^${normalize(parts[1])}$`, "i"),
+        };
+      }
+      if (parts[2]) {
+        query.subSubCategory = {
+          $regex: new RegExp(`^${normalize(parts[2])}$`, "i"),
+        };
+      }
+    }
+  
+    console.log("QUERY:", query);
+  
+    const result = await Goods.find(query);
+  
+    if (!result.length) {
+      throw HttpError(404, "No goods found");
+    }
+  
+    res.json(result);
+  };
+  
   // const result = await Wood.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
 
   // -createdAt -updatedAt поля які не треба брати з бази
   // populate бере айді знаходить овенра і вставляє обєкт з його данними
   // 2 арг список полів які треба повернути
   // skip скілеи пропустити обєктів в базі, limit скільки повернути
-  if (!result.length) {
-    throw HttpError(404, "No goods found");
-  }
-  res.json(result);
-};
 
 const getById = async (req, res) => {
   const { id } = req.params;
