@@ -4,7 +4,7 @@ const { Goods } = require("../models/goods");
 const { Parser } = require("json2csv"); // Пакет для перетворення JSON в CSV
 const { HttpError, ctrlWrapper } = require("../helpers");
 const xml2js = require("xml2js");
-const {reverseTransliterate} = require("../utils/reverseTransliterate");
+const {transliterate} = require("../utils/transliterate");
 
 
 // const getAll = async (req, res) => {
@@ -33,10 +33,17 @@ const {reverseTransliterate} = require("../utils/reverseTransliterate");
   
     if (category) {
       const decoded = decodeURIComponent(category);
-      const parts = decoded
+      
+      let parts = decoded
         .split("/")
-        .map((str) => reverseTransliterate(str.trim()));
-  
+        .map((str) => transliterate(str.trim(),true));
+
+    
+      // 🧠 Видаляємо "katehoriji", якщо вона є першою
+      if (parts[0]) {
+        parts = parts.slice(1);
+      }
+    
       if (parts[0]) {
         query.category = {
           $regex: new RegExp(`^${normalize(parts[0])}$`, "i"),
@@ -53,7 +60,8 @@ const {reverseTransliterate} = require("../utils/reverseTransliterate");
         };
       }
     }
-  
+    
+
     // ==== PAGINATION ====
     const skip = (parseInt(page) - 1) * parseInt(limit);
   
