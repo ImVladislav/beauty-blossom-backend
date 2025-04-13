@@ -33,12 +33,15 @@ const {transliterate} = require("../utils/transliterate");
   
     if (category) {
       const decoded = decodeURIComponent(category);
-      
-      let parts = decoded
-        .split("/")
-        .map((str) => transliterate(str.trim(),true));
+      const normalizedCategory = decoded.startsWith("/") ? decoded : `/${decoded}`;
 
-    
+    // 🪄 Розбиваємо шлях по слешах і прибираємо пусті
+    let parts = normalizedCategory
+      .split("/")
+      .filter(Boolean) // прибирає порожні сегменти
+      .map((str) => transliterate(str.trim(), true));
+console.log(parts);
+
       // 🧠 Видаляємо "katehoriji", якщо вона є першою
       if (parts[0]) {
         parts = parts.slice(1);
