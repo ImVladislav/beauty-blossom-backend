@@ -250,7 +250,7 @@ const getXML = async (req, res) => {
       "g:id": item._id ? String(item._id) : "N/A",
       "g:title": item.name || "No title",
       "g:description": item.description || "No description available",
-      "g:link": `https://beautyblossom.com.ua/product/${item._id}`,
+      "g:link": `https://beautyblossom.com.ua/product/${item.id}`,
       "g:image_link": item.images || "",
       "g:condition": "new",
       "g:availability": item.amount > 0 ? "in stock" : "out of stock",
