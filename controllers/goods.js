@@ -246,32 +246,32 @@ const getXML = async (req, res) => {
       return res.status(404).send("No goods found");
     }
 
-    const updatedGoods = goods.map((item) => {
-      const xmlItem = {
-        "g:id": item._id ? String(item._id) : "N/A",
-        "g:title": item.name || "No title",
-        "g:description": item.description || "No description available",
-        "g:link": `https://beautyblossom.com.ua/product/${item.id}`,
-        "g:image_link": item.images || "",
-        "g:condition": "new",
-        "g:availability": item.amount > 0 ? "in stock" : "out of stock",
-        "g:price": `${item.price} UAH`,
-        "g:brand": item.brand || "Unknown",
-        "g:mpn": item.article || "",
-        "g:shipping": {
-          "g:country": "UA",
-          "g:service": "Standard",
-          "g:price": "0.00 UAH",
-        },
-      };
+const updatedGoods = goods.map((item) => {
+  const xmlItem = {
+    "g:id": item._id ? String(item._id) : "N/A",
+    "g:title": item.name || "No title",
+    "g:description": item.description || "No description available",
+    "g:link": `https://beautyblossom.com.ua/product/${item.id}`,
+    "g:image_link": item.images || "",
+    "g:condition": "new",
+    "g:availability": item.amount > 0 ? "in stock" : "out of stock",
+    "g:price": `${item.price} UAH`,
+    "g:brand": item.brand || "Unknown",
+    "g:mpn": item.article || "",
+    "g:shipping": {
+      "g:country": "UA",
+      "g:service": "Standard",
+      "g:price": "0.00 UAH",
+    },
+  };
 
-      // Додаємо g:sale_price якщо товар має знижку
-  if (item.sale) {
+  // 🟥 Ось додавання <g:sale_price>
+  if (item.sale === true) {
     xmlItem["g:sale_price"] = `${item.price} UAH`;
   }
 
-      return xmlItem;
-    });
+  return xmlItem;
+});
 
     const feed = {
       rss: {
