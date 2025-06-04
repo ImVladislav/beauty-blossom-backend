@@ -4,140 +4,143 @@ const { Goods } = require("../models/goods");
 const { Parser } = require("json2csv"); // Пакет для перетворення JSON в CSV
 const { HttpError, ctrlWrapper } = require("../helpers");
 const xml2js = require("xml2js");
-const {transliterate} = require("../utils/transliterate");
-
+const { transliterate } = require("../utils/transliterate");
 
 // const getAll = async (req, res) => {
 
-  // const {_id: owner} = req.user;
-  // const {page = 1, limit = 10} = req.query;
-  // req.query обєкт параметрів пошуку
-  // const skip = (page - 1) * limit;
+// const {_id: owner} = req.user;
+// const {page = 1, limit = 10} = req.query;
+// req.query обєкт параметрів пошуку
+// const skip = (page - 1) * limit;
 
+// const result = await Goods.find();
 
-  // const result = await Goods.find();
+const getAll = async (req, res) => {
+  const {
+    brand,
+    category,
+    sort = "default",
+    page = 1,
+    limit = 3000,
+  } = req.query;
 
-  const getAll = async (req, res) => {
-    const { brand, category, sort = "default", page = 1, limit = 3000 } = req.query;
-  
-    const query = {};
-    const normalize = (val) => val?.trim();
-  
-   
-    if (brand) {
-      const decodedBrand = decodeURIComponent(brand);
-      query.brand = {
-        $regex: new RegExp(`^${decodedBrand.trim()}$`, "i") // ← чутливість до регістру прибрана
-      };
-    }
-  
-    if (category) {
-      const decoded = decodeURIComponent(category);
-      const normalizedCategory = decoded.startsWith("/") ? decoded : `/${decoded}`;
+  const query = {};
+  const normalize = (val) => val?.trim();
+
+  if (brand) {
+    const decodedBrand = decodeURIComponent(brand);
+    query.brand = {
+      $regex: new RegExp(`^${decodedBrand.trim()}$`, "i"), // ← чутливість до регістру прибрана
+    };
+  }
+
+  if (category) {
+    const decoded = decodeURIComponent(category);
+    const normalizedCategory = decoded.startsWith("/")
+      ? decoded
+      : `/${decoded}`;
 
     // 🪄 Розбиваємо шлях по слешах і прибираємо пусті
     let parts = normalizedCategory
       .split("/")
       .filter(Boolean) // прибирає порожні сегменти
       .map((str) => transliterate(str.trim(), true));
-console.log(parts);
+    console.log(parts);
 
-      // 🧠 Видаляємо "katehoriji", якщо вона є першою
-      if (parts[0]) {
-        parts = parts.slice(1);
-      }
-    
-      if (parts[0]) {
-        query.category = {
-          $regex: new RegExp(`^${normalize(parts[0])}$`, "i"),
-        };
-      }
-      if (parts[1]) {
-        query.subCategory = {
-          $regex: new RegExp(`^${normalize(parts[1])}$`, "i"),
-        };
-      }
-      if (parts[2]) {
-        query.subSubCategory = {
-          $regex: new RegExp(`^${normalize(parts[2])}$`, "i"),
-        };
-      }
+    // 🧠 Видаляємо "katehoriji", якщо вона є першою
+    if (parts[0]) {
+      parts = parts.slice(1);
     }
-    
 
-    // ==== PAGINATION ====
-    const skip = (parseInt(page) - 1) * parseInt(limit);
-  
-    // ==== SORTING ====
-    let sortOptions = {};
-    switch (sort) {
-      case "nameABC":
-        sortOptions = { name: 1 };
-        break;
-      case "nameCBA":
-        sortOptions = { name: -1 };
-        break;
-      case "priceMin":
-        sortOptions = { price: 1 };
-        break;
-      case "priceMax":
-        sortOptions = { price: -1 };
-        break;
-      case "inStock":
-        query.amount = { $gte: 1 };
-        break;
-      default:
-        sortOptions = {}; // no sorting
+    if (parts[0]) {
+      query.category = {
+        $regex: new RegExp(`^${normalize(parts[0])}$`, "i"),
+      };
     }
-  
-    const result = await Goods.find(query)
-      .sort(sortOptions)
-      .skip(skip)
-      .limit(parseInt(limit));
-  
-    const totalCount = await Goods.countDocuments(query);
-  
-    if (!result.length) {
-      throw HttpError(404, "No goods found");
+    if (parts[1]) {
+      query.subCategory = {
+        $regex: new RegExp(`^${normalize(parts[1])}$`, "i"),
+      };
     }
-  
-    res.json({
-      page: parseInt(page),
-      limit: parseInt(limit),
-      total: totalCount,
-      totalPages: Math.ceil(totalCount / limit),
-      goods: result,
-    });
-  };
+    if (parts[2]) {
+      query.subSubCategory = {
+        $regex: new RegExp(`^${normalize(parts[2])}$`, "i"),
+      };
+    }
+  }
 
-  const getNews = async (req, res) => {
-    const { page = 1, limit = 32 } = req.query;
-    const skip = (+page - 1) * +limit;
-  
-    // 1. Загальна кількість товарів
-    const totalItems = await Goods.countDocuments({ new: true });
-  
-    // 2. Список товарів з пагінацією
-    const products = await Goods.find({ new: true }, "-createdAt -updatedAt", {
-      skip,
-      limit: +limit,
-    });
-  
-    res.json({
-      totalItems,
-      totalPages: Math.ceil(products.length / +limit),
-      currentPage: +page,
-      items: products,
-    });
-  };
+  // ==== PAGINATION ====
+  const skip = (parseInt(page) - 1) * parseInt(limit);
 
+  // ==== SORTING ====
+  let sortOptions = {};
+  switch (sort) {
+    case "nameABC":
+      sortOptions = { name: 1 };
+      break;
+    case "nameCBA":
+      sortOptions = { name: -1 };
+      break;
+    case "priceMin":
+      sortOptions = { price: 1 };
+      break;
+    case "priceMax":
+      sortOptions = { price: -1 };
+      break;
+    case "inStock":
+      query.amount = { $gte: 1 };
+      break;
+    default:
+      sortOptions = {}; // no sorting
+  }
 
-  // const result = await Wood.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
+  const result = await Goods.find(query)
+    .sort(sortOptions)
+    .skip(skip)
+    .limit(parseInt(limit));
 
-  // -createdAt -updatedAt поля які не треба брати з бази
-  // populate бере айді знаходить овенра і вставляє обєкт з його данними
-  // 2 арг список полів які треба повернути
-  // skip скілеи пропустити обєктів в базі, limit скільки повернути
+  const totalCount = await Goods.countDocuments(query);
+
+  if (!result.length) {
+    throw HttpError(404, "No goods found");
+  }
+
+  res.json({
+    page: parseInt(page),
+    limit: parseInt(limit),
+    total: totalCount,
+    totalPages: Math.ceil(totalCount / limit),
+    goods: result,
+  });
+};
+
+const getNews = async (req, res) => {
+  const { page = 1, limit = 32 } = req.query;
+  const skip = (+page - 1) * +limit;
+
+  // 1. Загальна кількість товарів
+  const totalItems = await Goods.countDocuments({ new: true });
+
+  // 2. Список товарів з пагінацією
+  const products = await Goods.find({ new: true }, "-createdAt -updatedAt", {
+    skip,
+    limit: +limit,
+  });
+
+  res.json({
+    totalItems,
+    totalPages: Math.ceil(products.length / +limit),
+    currentPage: +page,
+    items: products,
+  });
+};
+
+// const result = await Wood.find({owner}, "-createdAt -updatedAt", {skip, limit}).populate("owner", "name email");
+
+// -createdAt -updatedAt поля які не треба брати з бази
+// populate бере айді знаходить овенра і вставляє обєкт з його данними
+// 2 арг список полів які треба повернути
+// skip скілеи пропустити обєктів в базі, limit скільки повернути
 
 const getById = async (req, res) => {
   const { id } = req.params;
@@ -246,32 +249,32 @@ const getXML = async (req, res) => {
       return res.status(404).send("No goods found");
     }
 
-const updatedGoods = goods.map((item) => {
-  const xmlItem = {
-    "g:id": item._id ? String(item._id) : "N/A",
-    "g:title": item.name || "No title",
-    "g:description": item.description || "No description available",
-    "g:link": `https://beautyblossom.com.ua/product/${item.id}`,
-    "g:image_link": item.images || "",
-    "g:condition": "new",
-    "g:availability": item.amount > 0 ? "in stock" : "out of stock",
-    "g:price": `${item.price} UAH`,
-    "g:brand": item.brand || "Unknown",
-    "g:mpn": item.article || "",
-    "g:shipping": {
-      "g:country": "UA",
-      "g:service": "Standard",
-      "g:price": "0.00 UAH",
-    },
-  };
+    const updatedGoods = goods.map((item) => {
+      const xmlItem = {
+        "g:id": item._id ? String(item._id) : "N/A",
+        "g:title": item.name || "No title",
+        "g:description": item.description || "No description available",
+        "g:link": `https://beautyblossom.com.ua/product/${item.id}`,
+        "g:image_link": item.images || "",
+        "g:condition": "new",
+        "g:availability": item.amount > 0 ? "in stock" : "out of stock",
+        "g:price": `${item.price} UAH`,
+        "g:brand": item.brand || "Unknown",
+        "g:mpn": item.article || "",
+        "g:shipping": {
+          "g:country": "UA",
+          "g:service": "Standard",
+          "g:price": "0.00 UAH",
+        },
+      };
 
-  // 🟥 Ось додавання <g:sale_price>
-  if (item.sale === true) {
-    xmlItem["g:sale_price"] = `${item.price} UAH`;
-  }
+      // 🟥 Ось додавання <g:sale_price>
+      if (item.sale === true) {
+        xmlItem["g:sale_price"] = `${item.priceOPT || item.price} UAH`;
+      }
 
-  return xmlItem;
-});
+      return xmlItem;
+    });
 
     const feed = {
       rss: {
@@ -285,11 +288,17 @@ const updatedGoods = goods.map((item) => {
       },
     };
 
-    const builder = new xml2js.Builder({ headless: true, xmldec: { version: "1.0", encoding: "UTF-8" } });
+    const builder = new xml2js.Builder({
+      headless: true,
+      xmldec: { version: "1.0", encoding: "UTF-8" },
+    });
     const xml = builder.buildObject(feed);
 
     res.setHeader("Content-Type", "application/xml");
-    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+    res.setHeader(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, max-age=0"
+    );
     res.setHeader("Pragma", "no-cache");
     res.setHeader("Expires", "0");
 
@@ -299,7 +308,6 @@ const updatedGoods = goods.map((item) => {
     return res.status(500).send("Error generating XML");
   }
 };
-
 
 module.exports = {
   getAll: ctrlWrapper(getAll),
