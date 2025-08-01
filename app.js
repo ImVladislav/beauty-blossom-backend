@@ -14,6 +14,7 @@ const feedbackRouter = require("./routes/api/feedback");
 const emailRouter = require("./routes/api/email");
 const searchUserRouter = require("./routes/api/searchUser");
 const brandsRouter = require("./routes/api/brands");
+const conversionRouter = require("./routes/api/conversion");
 
 const path = require("path");
 
@@ -58,6 +59,7 @@ app.use("/api/orders/", ordersRouter);
 app.use("/api/feedback", feedbackRouter);
 app.use("/api/inProgressWood", inProgressWood);
 app.use("/api/basket", basket);
+app.use("/api/conversion", conversionRouter);
 
 app.use("/api/email", emailRouter);
 app.use("/api/searchUser", searchUserRouter);
