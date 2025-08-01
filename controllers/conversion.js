@@ -21,7 +21,8 @@ const send = async (req, res) => {
 					client_user_agent: req.headers["user-agent"],
 					client_ip_address: req.ip,
 				},
-				...(Object.keys(custom_data).length > 0 && {custom_data}),
+				// eslint-disable-next-line camelcase
+				...(custom_data && Object.keys(custom_data).length > 0 && { custom_data }),
 			},
 		],
 	};
