@@ -22,7 +22,7 @@ const send = async (req, res) => {
 					client_ip_address: req.ip,
 				},
 				// eslint-disable-next-line camelcase
-				...(custom_data && Object.keys(custom_data).length > 0 && { custom_data }),
+				...custom_data,
 			},
 		],
 	};
