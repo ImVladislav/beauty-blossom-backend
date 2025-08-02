@@ -21,11 +21,14 @@ const send = async (req, res) => {
 					client_user_agent: req.headers["user-agent"],
 					client_ip_address: req.ip,
 				},
-				// eslint-disable-next-line camelcase
-				...custom_data,
 			},
 		],
 	};
+	// eslint-disable-next-line camelcase
+	if (custom_data !== {} && custom_data !== null) {
+		// eslint-disable-next-line camelcase
+		payload.data[0].custom_data = custom_data;
+	}
 
 	try {
 		const url = `https://graph.facebook.com/v18.0/${pixelId}/events?access_token=${accessToken}`;
