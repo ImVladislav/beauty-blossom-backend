@@ -1,9 +1,9 @@
 const nodemailer = require("nodemailer");
 const sendTelegramMessage = require("../helpers/telegram");
-const {EMAIL_PORT, EMAIL_USER} = process.env;
+const {EMAIL_HOST, EMAIL_PORT, EMAIL_USER} = process.env;
 
 const transporter = nodemailer.createTransport({
-	host:   "mail.adm.tools",
+	host:   EMAIL_HOST,
 	port:   EMAIL_PORT,
 	secure: true,
 	auth:   {
