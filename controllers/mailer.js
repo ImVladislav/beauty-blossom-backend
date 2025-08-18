@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
-const { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS } = process.env;
+const sendTelegramMessage = require("../helpers/telegram");
+const {EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS} = process.env;
 
 const transporter = nodemailer.createTransport({
   host: EMAIL_HOST,
@@ -20,6 +21,7 @@ const mailer = async (message) => {
     console.log("Email sent successfully");
   } catch (error) {
     console.error("Error sending email:", error);
+	await sendTelegramMessage(`❌ Помилка (mailer): ${error.message}\n\nStack:\n${error.stack}`);
     throw new Error("Error sending email");
   }
 };

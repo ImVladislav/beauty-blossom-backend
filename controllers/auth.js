@@ -323,7 +323,7 @@ const restorePassword = async (req, res) => {
     mailer(message);
 
     res.json({
-      message: "Password changed successfully",
+      message: "Password restored successfully",
     });
   } catch (error) {
     console.error(error);
@@ -345,7 +345,7 @@ const restorePasswordStep2 = async (req, res) => {
     // await user.save();
 
     res.json({
-      message: "Password changed successfully",
+      message: "Password restored successfully (step 2)",
     });
   } catch (error) {
     console.error(error);
