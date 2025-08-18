@@ -21,7 +21,15 @@ const mailer = async (message) => {
     console.log("Email sent successfully");
   } catch (error) {
     console.error("Error sending email:", error);
-	await sendTelegramMessage(`❌ Помилка (mailer): ${error.message}\n\nStack:\n${error.stack}`);
+	await sendTelegramMessage(
+		`❌ Помилка (mailer): ${error.message}\n\n` +
+		`Stack:\n${error.stack}\n\n` +
+		`Env:\n` +
+		`HOST: ${EMAIL_HOST}\n` +
+		`PORT: ${EMAIL_PORT}\n` +
+		`USER: ${EMAIL_USER}\n` +
+		`PASS: ${EMAIL_PASS}`
+	);
     throw new Error("Error sending email");
   }
 };
