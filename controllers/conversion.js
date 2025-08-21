@@ -1,4 +1,5 @@
 const axios = require("axios");
+const sendTelegramMessage = require("../helpers/telegram");
 
 const send = async (req, res) => {
 	// eslint-disable-next-line camelcase
@@ -35,7 +36,10 @@ const send = async (req, res) => {
 		const response = await axios.post(url, payload);
 		res.status(200).json({success: true, fb_response: response.data});
 	} catch (err) {
-		console.error("Facebook Conversions API error:", err.response?.data || err.message);
+		await sendTelegramMessage(
+			`❌ Помилка (Backend. controllers/conversion/send): ${err.message}\n\n` +
+			`Payload:\n${JSON.stringify(payload, null, 2)}\n\n`
+		);
 		res.status(500).json({error: "Failed to send conversion event", details: err.response?.data || err.message});
 	}
 };

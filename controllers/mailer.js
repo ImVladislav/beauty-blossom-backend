@@ -4,9 +4,8 @@ const {EMAIL_HOST, EMAIL_PORT, EMAIL_USER} = process.env;
 
 const transporter = nodemailer.createTransport({
 	host:   EMAIL_HOST,
-	port:   587,
-	secure: false,
-	tls: { rejectUnauthorized: false },
+	port:   EMAIL_PORT,
+	secure: true,
 	auth:   {
 		user: EMAIL_USER,
 		pass: 'RuiaOnDF6RL9m9Gl',
