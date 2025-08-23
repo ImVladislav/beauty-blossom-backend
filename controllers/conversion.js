@@ -8,25 +8,27 @@ const send = async (req, res) => {
 	const pixelId = '789745059892711';
 	const accessToken = 'EAA04OeuiMK8BO9ibuOGZCCgfOhpEMUhdsoiKK1VlNgWVUA7LB43A9bwpJqdAQyRzYuJxpAx7Ad63pDU2ZClOmerZAXTZBAQB6S2oyMgD08vRCJrsZAIa3cQapueQGRZBSGUUwKMuKX6xW9AvJq38ERWpyRnZAnpv67HFaJY3qHzLxr62ZCJ7CZBjjfsKX0WCPvlBEaQZDZD';
 
+	const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || req.ip;
+
 	const payload = {
 		data: [
 			{
 				event_name:       event_name,
 				event_time:       event_time,
 				event_id:         event_id,
-				event_source_url: event_source_url,
+				event_source_url: decodeURIComponent(event_source_url).replace(/\\/g, ""),
 				action_source:    "website",
 				user_data:        {
 					// eslint-disable-next-line camelcase
 					...user_data,
 					client_user_agent: req.headers["user-agent"],
-					client_ip_address: req.ip,
+					client_ip_address: clientIp,
 				},
 			},
 		],
 	};
 	// eslint-disable-next-line camelcase
-	if (custom_data !== {} && custom_data !== null) {
+	if (custom_data && Object.keys(custom_data).length > 0) {
 		// eslint-disable-next-line camelcase
 		payload.data[0].custom_data = custom_data;
 	}
