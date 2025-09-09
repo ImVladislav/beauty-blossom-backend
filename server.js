@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const app = require("./app");
 
-const { DB_HOST, PORT = 5000 } = process.env;
+const { APP_ENV, DB_HOST, PORT = 5000 } = process.env;
 
 // const { NEW_DB_HOST, PORT = 3001 } = process.env;
 // prcess.env змынне оточення console.log(process.env)
@@ -12,8 +12,7 @@ const { DB_HOST, PORT = 5000 } = process.env;
 mongoose.set("strictQuery", true);
 
 mongoose
-  .connect(DB_HOST)
-  // .connect(NEW_DB_HOST)
+  .connect(APP_ENV === 'local' ? 'mongodb://127.0.0.1:27017/beauty' : DB_HOST)
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Server running. Use our API on port: ${PORT}`);
