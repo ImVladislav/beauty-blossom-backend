@@ -1,3 +1,5 @@
+const createError = require("http-errors");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar"); // для генерації тимчасових аватарів
@@ -307,7 +309,7 @@ const restorePassword = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      throw new HttpError(404, "User not found");
+	    throw createError(404, "User not found");
     }
     console.log(email);
     const newPassword = generateNewPassword(); // Отримання нового пароля (ваша логіка генерації)
