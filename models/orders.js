@@ -6,7 +6,7 @@ const statusList = ['Новий', 'Прийняте в роботу','Збира
 
 const ordersSchema = new Schema({
     owner: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: "user",
         required: false,
     },

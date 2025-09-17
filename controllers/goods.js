@@ -145,7 +145,7 @@ const getNews = async (req, res) => {
 const getById = async (req, res) => {
   const { id } = req.params;
   // const result = await Book.findOne({_id: id})
-  const result = await Goods.findById(id);
+  const result = await Goods.findOne({id: id});
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -309,14 +309,23 @@ const getXML = async (req, res) => {
   }
 };
 
+const findByName = async (req, res) => {
+	const { name } = req.params;
+	const result = await Goods.find({
+		name: { $regex: name, $options: "i" }
+	});
+	res.json(result);
+};
+
 module.exports = {
-  getAll: ctrlWrapper(getAll),
-  getById: ctrlWrapper(getById),
-  add: ctrlWrapper(add),
-  updateById: ctrlWrapper(updateById),
-  updateCheked: ctrlWrapper(updateCheked),
-  deleteById: ctrlWrapper(deleteById),
-  getCSV: ctrlWrapper(getCSV),
-  getXML: ctrlWrapper(getXML), // Додаємо новий маршрут
-  getNews: ctrlWrapper(getNews),
+	getAll:       ctrlWrapper(getAll),
+	getById:      ctrlWrapper(getById),
+	add:          ctrlWrapper(add),
+	updateById:   ctrlWrapper(updateById),
+	updateCheked: ctrlWrapper(updateCheked),
+	deleteById:   ctrlWrapper(deleteById),
+	getCSV:       ctrlWrapper(getCSV),
+	getXML:       ctrlWrapper(getXML),
+	getNews:      ctrlWrapper(getNews),
+	findByName:   ctrlWrapper(findByName),
 };
