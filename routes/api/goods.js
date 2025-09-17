@@ -9,13 +9,11 @@ const {schemas} = require("../../models/goods");
 const router = express.Router();
 
 router.get("/googlefeed", ctrl.getXML);
-
 router.get("/products", ctrl.getCSV);
 
-
 router.get("/",  ctrl.getAll);
-
-router.get("/:id", isValidId, ctrl.getById);
+router.get("/:id", ctrl.getById);
+router.get("/findByName/:name", ctrl.findByName);
 
 router.post("/",  validateBody(schemas.addSchema), ctrl.add);
 
@@ -24,7 +22,6 @@ router.put("/:id", isValidId, validateBody(schemas.addSchema), ctrl.updateById);
 router.patch("/:id/checked",  isValidId, validateBody(schemas.updateChekedSchema), ctrl.updateCheked);
 
 router.delete("/:id",  isValidId, ctrl.deleteById);
-
 
 module.exports = router;
 
