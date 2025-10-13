@@ -14,6 +14,7 @@ router.get("/products", ctrl.getCSV);
 router.get("/",  ctrl.getAll);
 router.get("/:id", ctrl.getById);
 router.get("/findByName/:name", ctrl.findByName);
+router.get("/findByBrandName/:brandName", ctrl.findByBrandName);
 
 router.post("/",  validateBody(schemas.addSchema), ctrl.add);
 

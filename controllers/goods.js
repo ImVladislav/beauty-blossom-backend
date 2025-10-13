@@ -317,15 +317,24 @@ const findByName = async (req, res) => {
 	res.json(result);
 };
 
+const findByBrandName = async (req, res) => {
+	const {brandName} = req.params;
+	const result = await Goods.find({
+		brand: {$regex: brandName, $options: "i"}
+	});
+	res.json(result);
+};
+
 module.exports = {
-	getAll:       ctrlWrapper(getAll),
-	getById:      ctrlWrapper(getById),
-	add:          ctrlWrapper(add),
-	updateById:   ctrlWrapper(updateById),
-	updateCheked: ctrlWrapper(updateCheked),
-	deleteById:   ctrlWrapper(deleteById),
-	getCSV:       ctrlWrapper(getCSV),
-	getXML:       ctrlWrapper(getXML),
-	getNews:      ctrlWrapper(getNews),
-	findByName:   ctrlWrapper(findByName),
+	getAll:          ctrlWrapper(getAll),
+	getById:         ctrlWrapper(getById),
+	add:             ctrlWrapper(add),
+	updateById:      ctrlWrapper(updateById),
+	updateCheked:    ctrlWrapper(updateCheked),
+	deleteById:      ctrlWrapper(deleteById),
+	getCSV:          ctrlWrapper(getCSV),
+	getXML:          ctrlWrapper(getXML),
+	getNews:         ctrlWrapper(getNews),
+	findByName:      ctrlWrapper(findByName),
+	findByBrandName: ctrlWrapper(findByBrandName),
 };
