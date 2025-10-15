@@ -2,7 +2,7 @@ const express = require("express");
 
 const ctrl = require("../../controllers/goods");
 
-const {validateBody, isValidId, } = require("../../middlewares");
+const {validateBody, isValidId,} = require("../../middlewares");
 
 const {schemas} = require("../../models/goods");
 
@@ -11,21 +11,21 @@ const router = express.Router();
 router.get("/googlefeed", ctrl.getXML);
 router.get("/products", ctrl.getCSV);
 
-router.get("/",  ctrl.getAll);
+router.get("/", ctrl.getAll);
 router.get("/:id", ctrl.getById);
 router.get("/findByName/:name", ctrl.findByName);
 router.get("/findByBrandName/:brandName", ctrl.findByBrandName);
+router.get("/findByCategory/:category", ctrl.findByCategory);
 
-router.post("/",  validateBody(schemas.addSchema), ctrl.add);
+router.post("/", validateBody(schemas.addSchema), ctrl.add);
 
 router.put("/:id", isValidId, validateBody(schemas.addSchema), ctrl.updateById);
 
-router.patch("/:id/checked",  isValidId, validateBody(schemas.updateChekedSchema), ctrl.updateCheked);
+router.patch("/:id/checked", isValidId, validateBody(schemas.updateChekedSchema), ctrl.updateCheked);
 
-router.delete("/:id",  isValidId, ctrl.deleteById);
+router.delete("/:id", isValidId, ctrl.deleteById);
 
 module.exports = router;
-
 
 // const express = require("express");
 
@@ -51,25 +51,6 @@ module.exports = router;
 
 // module.exports = router;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // router.get('/', async (request, responce) => {
 //     // console.log(request.url);
 //     // console.log(request.method);
@@ -81,12 +62,6 @@ module.exports = router;
 // })
 // // 1 назва маршруту
 // // 2 функцыя яка виконується коли маршрут знайдено
-
-
-
-
-
-
 
 // router.get('/', async (request, responce) => {
 //     // console.log(request.url);

@@ -325,6 +325,19 @@ const findByBrandName = async (req, res) => {
 	res.json(result);
 };
 
+const findByCategory = async (req, res) => {
+	const {category} = req.params;
+	const regex = new RegExp(category, "i");
+	const result = await Goods.find({
+		$or: [
+			{category: regex},
+			{subCategory: regex},
+			{subSubCategory: regex},
+		],
+	});
+	res.json(result);
+};
+
 module.exports = {
 	getAll:          ctrlWrapper(getAll),
 	getById:         ctrlWrapper(getById),
@@ -337,4 +350,5 @@ module.exports = {
 	getNews:         ctrlWrapper(getNews),
 	findByName:      ctrlWrapper(findByName),
 	findByBrandName: ctrlWrapper(findByBrandName),
+	findByCategory:  ctrlWrapper(findByCategory),
 };
