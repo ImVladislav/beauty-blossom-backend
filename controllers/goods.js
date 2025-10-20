@@ -258,7 +258,7 @@ const getXML = async (req, res) => {
         "g:image_link": item.images || "",
         "g:condition": "new",
         "g:availability": item.amount > 0 ? "in stock" : "out of stock",
-        "g:price": `${Number(item.price/1).toFixed(2)} UAH`,
+        "g:price": `${(item.price / 1).toFixed(2)} UAH`,
         "g:brand": item.brand || "Unknown",
         "g:mpn": item.article || "",
         "g:shipping": {
