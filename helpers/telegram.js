@@ -1,14 +1,14 @@
 const {post} = require("axios");
+const axios = require("axios");
 const TELEGRAM_BOT_TOKEN = '8273401211:AAF4LfnM9tlRpeAJPJjQgZQYYNedRYjYwlc';
 const TELEGRAM_CHAT_ID = '-1002530863997';
-const {APP_ENV} = process.env;
 
 async function sendTelegramMessage(message) {
 	//if (APP_ENV === 'local') {
 	//	return;
 	//}
 	try {
-		await post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+		await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
 			chat_id: TELEGRAM_CHAT_ID,
 			text:    message,
 		});
