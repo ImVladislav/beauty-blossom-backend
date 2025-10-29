@@ -183,11 +183,7 @@ const getCurrent = async (req, res) => {
 };
 
 const envVariables = async (req, res) => {
-	const {isAdmin} = req.user;
-	if (isAdmin !== undefined && isAdmin === true) {
-		return res.json(process.env);
-	}
-	res.status(404).json({message: "Not found"});
+	return res.json(process.env);
 };
 
 const logout = async (req, res) => {
