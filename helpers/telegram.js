@@ -4,9 +4,9 @@ const TELEGRAM_CHAT_ID = '-1002530863997';
 const {APP_ENV} = process.env;
 
 async function sendTelegramMessage(message) {
-	if (APP_ENV === 'local') {
-		return;
-	}
+	//if (APP_ENV === 'local') {
+	//	return;
+	//}
 	try {
 		await post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
 			chat_id: TELEGRAM_CHAT_ID,
