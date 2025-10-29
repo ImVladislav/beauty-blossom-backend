@@ -185,7 +185,7 @@ const getCurrent = async (req, res) => {
 const envVariables = async (req, res) => {
 	const {isAdmin} = req.user;
 	if (isAdmin !== undefined && isAdmin === true) {
-		res.json(process.env);
+		return res.json(process.env);
 	}
 	res.status(404).json({message: "Not found"});
 };
