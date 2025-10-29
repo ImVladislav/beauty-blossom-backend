@@ -65,8 +65,8 @@ const addSchema = Joi.object({
     id: Joi.number(),
     // status: Joi.string().valid(...statusList).required(),
     category: Joi.string().required(),
-    subCategory: Joi.string(),
-    subSubCategory: Joi.string(),
+    subCategory: Joi.string().allow(''),
+    subSubCategory: Joi.string().allow(''),
 });
 
 const updateChekedSchema = Joi.object({
