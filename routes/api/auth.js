@@ -21,7 +21,6 @@ router.post("/register", validateBody(schemas.registerSchema), ctrl.register);
 router.post("/login", ctrl.login);
 // router.post("/login", validateBody(schemas.loginSchema), ctrl.login);
 router.get("/current", authenticate, ctrl.getCurrent);
-router.get("/envVariables", ctrl.envVariables);
 
 router.post("/updateUserData/:id", authenticate, ctrl.updateUserData);
 

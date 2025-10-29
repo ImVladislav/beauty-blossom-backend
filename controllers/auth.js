@@ -182,10 +182,6 @@ const getCurrent = async (req, res) => {
 	});
 };
 
-const envVariables = async (req, res) => {
-	return res.json(process.env);
-};
-
 const logout = async (req, res) => {
 	const {_id} = req.user;
 	await User.findByIdAndUpdate(_id, {token: ""});
@@ -373,7 +369,6 @@ module.exports = {
 	// resendVerifyEmail: ctrlWrapper(resendVerifyEmail),
 	login:                ctrlWrapper(login),
 	getCurrent:           ctrlWrapper(getCurrent),
-	envVariables:         ctrlWrapper(envVariables),
 	logout:               ctrlWrapper(logout),
 	updateAvatar:         ctrlWrapper(updateAvatar),
 	updateUserData:       ctrlWrapper(updateUserData),
