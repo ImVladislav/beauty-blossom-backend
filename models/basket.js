@@ -71,8 +71,8 @@ const addSchema = Joi.object({
   sale: Joi.boolean().required(),
   // status: Joi.string().valid(...statusList).required(),
   category: Joi.string(),
-	subCategory: Joi.string().allow('').optional(),
-	subSubCategory: Joi.string().allow('').optional(),
+	subCategory: Joi.string().empty('').optional(),
+	subSubCategory: Joi.string().empty('').optional(),
   createdAt: Joi.date(),
   basketCreatedAt: Joi.date(),
 });
