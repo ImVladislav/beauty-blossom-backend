@@ -1,22 +1,22 @@
-const { ctrlWrapper } = require("../helpers");
+const {ctrlWrapper} = require("../helpers");
 const fs = require("fs");
 const path = require("path");
 
 const mailer = require("./mailer");
 
 async function sendEmail(paths, req, res) {
-  const { title, text, to, subject } = req.body;
+	const {title, text, to, subject} = req.body;
 
-  const imagesHtml = paths
-    .map((image) => `<img src='cid:${image.cid}'">`)
-    .join("");
+	const imagesHtml = paths
+		.map((image) => `<img src="cid:${image.cid}"">`)
+		.join("");
 
-  try {
-    const result = await mailer({
-      from: "beautyblossom@ukr.net",
-      to,
-      subject,
-      html: `
+	try {
+		const result = await mailer({
+			from:        "beautyblossom@ukr.net",
+			to,
+			subject,
+			html:        `
         <body style="text-align: center; background-color: #fff; color:#000000; fontSize: 18px">
           <h3 style="font-weight: bold; color:#000000; font-size: 22px">${title}</h3>
           <pre style="margin-top: 20px; color:#000000; font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 400;">
@@ -120,37 +120,41 @@ async function sendEmail(paths, req, res) {
           <p style="color:#000000; font-size: 18px ">${new Date().toLocaleString()}</p>
         </body>
       `,
-      attachments: paths,
-    });
+			attachments: paths,
+		});
 
-    console.log("Email is sent:", result);
-    deleteOldImages();
+		console.log("Email is sent:", result);
+		deleteOldImages();
 
-    return { message: "Email is sent, please check the inbox", success: true };
-  } catch (error) {
-    console.log("An error occurred:", error);
-    return {
-      message: "Error occurred while sending the email",
-      success: false,
-    };
-  }
+		return {message: "Email is sent, please check the inbox", success: true};
+	} catch (error) {
+		console.log("An error occurred:", error);
+		return {
+			message: "Error occurred while sending the email",
+			success: false,
+		};
+	}
 }
 
 function deleteOldImages() {
-  const directory = "/var/public/uploads";
-  // const directory = "public/uploads";
-  fs.readdir(directory, (err, files) => {
-    if (err) throw err;
+	const directory = "/var/public/uploads";
+	// const directory = "public/uploads";
+	fs.readdir(directory, (err, files) => {
+		if (err) {
+			throw err;
+		}
 
-    for (const file of files) {
-      fs.unlink(path.join(directory, file), (err) => {
-        if (err) throw err;
-        console.log(`Deleted file: ${file}`);
-      });
-    }
-  });
+		for (const file of files) {
+			fs.unlink(path.join(directory, file), (err) => {
+				if (err) {
+					throw err;
+				}
+				console.log(`Deleted file: ${file}`);
+			});
+		}
+	});
 }
 
 module.exports = {
-  sendEmail: ctrlWrapper(sendEmail),
+	sendEmail: ctrlWrapper(sendEmail),
 };

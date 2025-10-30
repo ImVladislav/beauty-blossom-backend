@@ -16,7 +16,7 @@ const mailer = require("./mailer");
 
 // const { HttpError, ctrlWrapper } = require("../helpers");
 
-const {SECRET_KEY, BASE_URL} = process.env;
+const {SECRET_KEY} = process.env;
 
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
