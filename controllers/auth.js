@@ -334,6 +334,7 @@ const restorePassword = async (req, res) => {
 
 		res.json({
 			message: "Password restored successfully",
+			status:  "success",
 		});
 	} catch (error) {
 		console.error(error);
