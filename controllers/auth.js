@@ -328,7 +328,7 @@ const restorePassword = async (req, res) => {
 		const message = {
 			to:      email,
 			subject: "Beauty-blossom - відновлення пароля",
-			text:    `Ваш новий пароль на Beauty blossom: ${newPassword}`,
+			text:    `Ваш новий пароль на Beauty blossom : ${newPassword}`,
 		};
 		mailer(message);
 
